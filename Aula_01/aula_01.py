@@ -1,48 +1,79 @@
+import asyncio
+
 '''
-O FastAPI é um framework web moderno, rápido e de alto desempenho para criar APIs RESTful 
-e GraphQL com Python. Ele é baseado em type hints do Python e oferece diversas 
-funcionalidades que facilitam o desenvolvimento de APIs robustas e escaláveis.
-Aula_01 copy'''
-from fastapi import FastAPI
+Python: "async" e "await"
 
-# instanciar API
-app = FastAPI()
+Assíncrono é aguardar.
 
-# rota 
-@app.get('/') # base da pagina
-async def msg(): # função da rota
-    return {"msg": "Décio santana de Aguiar"} # mensagem
+Em Python, "async" e "await" são palavras-chave que trabalham juntas 
+para habilitar a programação assíncrona. Isso significa que seu programa 
+pode lidar com várias tarefas simultaneamente sem bloquear o thread principal. 
+Isso é particularmente útil para operações vinculadas a solicitações de rede 
+ou acesso ao sistema de arquivos, onde você pode passar muito tempo aguardando.
+'''
 
-if __name__ == 'main':
-    '''
-    "import uvicorn" 
-    permite que você use o servidor web ASGI para 
-    executar aplicativos web Python assíncronos
-    '''
-    from uvicorn import run # subir o servidor
+# sincrono
+def soma_01(a, b):
+    return a + b
 
-    run('main:app', host="127.0.0.1", port=8000, log_level='info', reload=True)
-    # # run('main:app', host="0.0.0.0", port=8000, log_level='info', reload=True)
+resultado_01 = soma_01(1,3)
+print(resultado_01)
+print()
+# ------------------------------------------
 
+# assíncrono
+async def soma_02(a, b):
+    return a + b
 
-    '''
-Parâmetros run(<nome_arquivo>:app, host, port, log_level, reload):
+resultado_02 = soma_02(1,3)
+print(resultado_02)
+print()
 
-    # <nome_arquivo>:app (obrigatório): Este argumento representa o aplicativo ASGI 
+# ------------------------------------------
 
-    # host (opcional, padrão: "0.0.0.0"): endereço IP no qual o aplicativo escutará as 
-    solicitações recebidas ("0.0.0.0" ou "127.0.0.1": localhost)
+# assíncrono
+async def soma_03(a, b):
+    return a + b
 
-    # port (opcional, padrão: 8000): Este argumento define o número da porta na qual 
-    o aplicativo escutará o tráfego. 
+resultado_03 = soma_03(1,3)
+# execução de função assíncrona
+event_loop_03 = asyncio.new_event_loop()
+final = event_loop_03.run_until_complete(resultado_03)
+print(final)
 
-    # log_level (opcional, padrão: "info"): Este parâmetro controla o detalhamento 
-    das mensagens de log emitidas pelo Uvicorn durante a execução do aplicativo. 
-        Os valores possíveis incluem:
-        "debug": mostra todas as mensagens de registro (mais detalhadas).
-        "info"(padrão): Mostra mensagens informativas.
-        "warning": mostra avisos e erros.
-        "error": Mostra apenas erros.
+# -------------------- OU ----------------------
 
-    # reload (opcional, padrão: True): Esta configuração permite o recarregamento automático 
-    '''
+# assíncrono
+async def soma_04(a, b):
+    return a + b
+# execução de função assíncrona
+print(asyncio.run(soma_04(1,3)))
+
+# ======================================================================
+
+# assíncrono
+async def soma_05(a, b):
+    return a + b
+
+async def print_soma(a, b):
+    resultado_05 = await soma_05(a, b)
+    print(resultado_05)
+
+print()
+# execução de função assíncrona
+event_loop_05 = asyncio.new_event_loop()
+final = event_loop_05.run_until_complete(print_soma(1,3))
+
+# -------------------- OU ----------------------
+
+# assíncrono
+async def soma_06(a, b):
+    return a + b
+
+async def print_soma(a, b):
+    resultado_06 = await soma_06(a, b)
+    print(resultado_06)
+
+print()
+# execução de função assíncrona
+asyncio.run(print_soma(1,3))

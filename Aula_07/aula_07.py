@@ -1,8 +1,7 @@
-# Seção 3 (FastAPI - APIs Modernas e Assíncronas com Python)
-# alua 10 até 16
-from fastapi import FastAPI, HTTPException, status, Response
+from fastapi import FastAPI, HTTPException, status, Response, Depends
+from typing import Optional, Any
 from pydantic import BaseModel
-from typing import Optional
+from time import sleep
 
 '''
 O "BaseModel" no Pydantic é uma classe base que permite a 
@@ -23,24 +22,39 @@ class Curso(BaseModel):
 
 # instanciar API
 app = FastAPI(
-             title='Aula 05',
+             title='Aula 07',
              version='0.0.1',
-             description= 'Alua 10 até 16'
+             description= 'Alua 20 até 19'
              )
+
+# Simulação de abertura de um banco de dados Dependência <======================
+def falso_db():
+    try:
+        print("Abrindo conexão banco de dados...")
+        sleep(2)
+    finally:
+        print("Fechando conexão banco de dados...")
+        sleep(2)
+
 
 # dados iniciais
 cursos = {
-            1: {
-                "titulo": "Programação para Leigos",
-                "aulas": 112,
-                "horas": 58
-            },
-            2: {
-                "titulo": "Algoritmos e logica de programação",
-                "aulas": 87,
-                "horas": 43
-            }
-        }
+    1: {
+        "titulo": "Programação para Leigos",
+        "aulas": 112,
+        "horas": 58
+    },
+    2: {
+        "titulo": "Algoritmos e logica de programação",
+        "aulas": 87,
+        "horas": 67
+    },
+    3: {
+        "titulo": "Programação linguagem Python",
+        "aulas": 33,
+        "horas": 47
+    }
+}
 
 # rota
 @app.get('/')
@@ -49,12 +63,14 @@ async def get_site():
 
 # rota (Ler todos os dados)
 @app.get('/cursos')
-async def get_cursos():
+# db: Any = Depends(falso_db) <===========================================================
+async def get_cursos(db: Any = Depends(falso_db)): # Dependência <========================
     return cursos
 
 # rota (Ler dados por id)
 @app.get('/cursos/{curso_id}')
-async def get_curso(curso_id: int):
+# db: Any = Depends(falso_db) <===========================================================
+async def get_curso(curso_id: int , db: Any = Depends(falso_db)): # Dependência <=========
     try:
         curso = cursos[curso_id]
         return curso
@@ -64,8 +80,9 @@ async def get_curso(curso_id: int):
     
 # rota (Criar novo curso)
 @app.post('/cursos', status_code=status.HTTP_201_CREATED)
-async def post_curso(curso: Curso):
-    
+# db: Any = Depends(falso_db) <===========================================================
+async def post_curso(curso: Curso, db: Any = Depends(falso_db)): # Dependência <==========
+
     # ======================================================
     # adição de novo id com maior valor existente na lista "cursos"
     proximo_id = 0 # nova chave
@@ -81,7 +98,11 @@ async def post_curso(curso: Curso):
 
 # rota (Atualizar novo curso por id)
 @app.put('/cursos/{curso_id}')
-async def put_curso(curso_id: int, curso: Curso):
+# db: Any = Depends(falso_db) <===========================================================
+async def put_curso(curso_id: int, 
+                    curso: Curso, 
+                    db: Any = Depends(falso_db) # Dependência <===========================
+                    ):
     if curso_id in cursos:
         cursos[curso_id] = curso
         return curso
@@ -92,7 +113,8 @@ async def put_curso(curso_id: int, curso: Curso):
     
 # rota (Deletar novo curso por id)
 @app.delete('/cursos/{curso_id}')
-async def delete_curso(curso_id: int):
+# db: Any = Depends(falso_db) <===========================================================
+async def delete_curso(curso_id: int, db: Any = Depends(falso_db)): # Dependência <=======
     if curso_id in cursos:
         del cursos[curso_id] # eliminar id do corpo do dados
         return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -102,7 +124,7 @@ async def delete_curso(curso_id: int):
 
 if __name__ == 'main':
     
-    from uvicorn import run # subir o servidor: uvicorn Aula_05.aula_05:app --reload
+    from uvicorn import run # subir o servidor uvicorn Aula_07.aula_07:app --reload
 
     run('main:app', host="127.0.0.1", port=8000, reload=True)
-    
+     
