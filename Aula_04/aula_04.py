@@ -11,7 +11,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 # rota 
-@app.get('/', description='Retorna uma mensagem', summary='Mensagem') # base da pagina
+@app.get('/', description='Retorna uma mensagem', summary='Mensagem') # (home)
 async def msg(): # função da rota
     return {"msg": "Décio santana de Aguiar"} # mensagem
 
