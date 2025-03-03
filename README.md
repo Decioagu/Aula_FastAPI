@@ -1,32 +1,29 @@
 # Aula_FastAPI
  Framework web com Python
 
- **Aula_01 & Aula_02**
-
-- Python: __"async"__ e __"await"__
-
-    -   Em Python, __"async"__ e __"await"__ são palavras-chave que trabalham juntas para habilitar a programação assíncrona. Isso significa que seu programa pode lidar com várias tarefas simultaneamente sem bloquear o __thread__ principal. Isso é particularmente útil para operações vinculadas a solicitações de rede ou acesso ao sistema de arquivos, onde você pode passar muito tempo aguardando.
----
-
-**Aula_03**
-- O "__BaseModel__" no Pydantic é uma classe base que permite a criação de modelos de dados com validação e tipagem automática.
-- O módulo "__field_validator"__ oferece uma ferramenta poderosa para personalizar validações complexas e específicas para atender às suas necessidades.
----
-
-**Aula_04**
-
- - O __Pydantic__ é uma biblioteca Python poderosa e versátil que oferece diversos recursos para facilitar o desenvolvimento de software, com foco principal na validação de dados
+**Aula_01**
 
 - O __FastAPI__ é um framework web moderno, rápido e de alto desempenho para criar APIs RESTful e GraphQL com Python. Ele é baseado em __type hints__ do Python e oferece diversas funcionalidades que facilitam o desenvolvimento de APIs robustas e escaláveis.
 
+- O __Pydantic__ é uma biblioteca Python poderosa e versátil que oferece diversos recursos para facilitar o desenvolvimento de software, com foco principal na validação de dados
+
+- O "__BaseModel__" no Pydantic é uma classe base que permite a criação de modelos de dados com validação e tipagem automática.
+
+- Em Python, __"async"__ e __"await"__ são palavras-chave que trabalham juntas para habilitar a programação assíncrona. Isso é particularmente útil para operações vinculadas a solicitações de rede ou acesso ao sistema de arquivos, onde você pode passar muito tempo aguardando.
+
 - O pacote __uvicorn__ é um servidor web ASGI (Asynchronous Server Gateway Interface), uma interface padrão para comunicação entre servidores web, frameworks e aplicações Python, com foco em funcionalidades assíncronas. para Python.
 
-- O __gunicorn__, abreviação de "Green Unicorn", é um servidor HTTP assíncrono de alta performance escrito em Python. Ele é amplamente utilizado para hospedar aplicações Python na web.
-
-- __Rotas__ de acesso são como os endereços específicos que você usa para acessar diferentes recursos
+- __Rotas em FastAPI__: os decorator @app.get(path), @app.post(path), @app.put(path) e @app.delete(path) são usados para definir uma rota para aplicação web.
 ---
 
-**Aula_05**
+**Aula_03**
+
+- O módulo "__field_validator"__ oferece uma ferramenta poderosa para personalizar validações complexas e específicas para atender às suas necessidades.
+---
+
+**Aula_03**
+
+Rotas: @app.get(path), @app.post(path), @app.put(path) e @app.delete(path).
 
 - Operações CRUD:
     - __Create (Criar)__: Insere novos registros em uma tabela do banco de dados.

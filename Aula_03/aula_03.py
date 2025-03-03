@@ -37,3 +37,5 @@ class User(BaseModel):
 # Criação do objeto User
 user = User(nome='Décio', idade=41, email="deciosan@gmail.com")
 print(f'\n{user}\n')
+
+# uvicorn Aula_03.aula_03:app --reload

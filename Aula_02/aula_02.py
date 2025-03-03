@@ -5,9 +5,6 @@ from pydantic import BaseModel
 from typing import Optional
 
 '''
-O "BaseModel" no Pydantic é uma classe base que permite a 
-criação de modelos de dados com validação e tipagem automática
-
 "Optional" é um tipo genérico que representa um
 valor que pode ser do tipo especificado ou None. 
 Ex:
@@ -22,11 +19,7 @@ class Curso(BaseModel):
     horas: int
 
 # instanciar API
-app = FastAPI(
-             title='Aula 05',
-             version='0.0.1',
-             description= 'Alua 10 até 16'
-             )
+app = FastAPI(title='Aula 02', version='0.0.1', description= 'Alua 10 até 16')
 
 # dados iniciais
 cursos = {
@@ -54,12 +47,12 @@ async def get_cursos():
 
 # rota (Ler dados por id)
 @app.get('/cursos/{curso_id}')
-async def get_curso(curso_id: int):
+async def get_curso_por_id(curso_id: int):
     try:
         curso = cursos[curso_id]
         return curso
     except KeyError:
-        # tratar id inexistente
+        # Tratamento de id não existente
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado')
     
 # rota (Criar novo curso)
@@ -102,7 +95,8 @@ async def delete_curso(curso_id: int):
 
 if __name__ == 'main':
     
-    from uvicorn import run # subir o servidor: uvicorn Aula_05.aula_05:app --reload
+    from uvicorn import run 
 
     run('main:app', host="127.0.0.1", port=8000, reload=True)
-    
+
+# Subir o servidor: uvicorn Aula_02.aula_02:app --reload 

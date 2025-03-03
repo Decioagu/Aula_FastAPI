@@ -1,5 +1,5 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI # API
+from pydantic import BaseModel # criação de modelo
 
 # modelagem e validação tipo
 class Produto(BaseModel):
@@ -25,28 +25,29 @@ produtos = [
 async def index():
    return {"msg": "Décio santana de Aguiar"}
 
+# rota (busca)
+@app.get('/produtos/')
+async def buscar_produtos():
+    return produtos
+
 # rota (busca por id)
 @app.get('/produtos/{id}')
-async def buscar_produto(id: int):
+async def buscar_produto_por_id(id: int):
     for produto in produtos:
         if produto.id == id:
             return produto
     return None
 
-# rota (atualizar produtos por id)
-@app.put('/produtos/{id}')
-async def atualizar_produto(id: int, produto: Produto):
-    for prod in produtos:
-        if prod.id == id:
-            prod = produto
-
-            return prod # receber resposta atualizada
-    return None
-
+# PACOTES:
 # pip instal fastapi
 # pip instal uvicorn
+# pip install pydantic
+
+# ACESSO:
 # Pasta Aula_01: cd .\Aula_01\
 # Acesso ao terminal: uvicorn main:app --reload
+# Acesso ao terminal: uvicorn Aula_01.main:app --reload
+
 # Acesso: http://127.0.0.1:8000 
 # Sair: Pressionar: Ctrl+C 
 
@@ -58,3 +59,35 @@ Documentação interativa:
 Swagger UI: http://127.0.0.1:8000/docs
 Redoc: http://127.0.0.1:8000/redoc
 '''
+
+if __name__ == 'main':
+    
+    from uvicorn import run
+
+    # run('main:app', host="127.0.0.1", port=8000, log_level='info', reload=True)
+    run('main:app', host="0.0.0.0", port=8000, log_level='info', reload=True)
+
+# Acesso ao terminal: uvicorn Aula_01.main:app --reload
+
+    '''
+    Parâmetros run(<nome_arquivo>:app, host, port, log_level, reload):
+
+    # <nome_arquivo>:app (obrigatório): Este argumento representa o aplicativo ASGI 
+
+    # host (opcional, padrão: "0.0.0.0"): endereço IP no qual o aplicativo escutará as 
+    solicitações recebidas ("0.0.0.0" ou "127.0.0.1": localhost)
+
+    # port (opcional, padrão: 8000): Este argumento define o número da porta na qual 
+    o aplicativo escutará o tráfego. 
+
+    # log_level (opcional, padrão: "info"): Este parâmetro controla o detalhamento 
+    das mensagens de log emitidas pelo Uvicorn durante a execução do aplicativo. 
+        Os valores possíveis incluem:
+        "debug": mostra todas as mensagens de registro (mais detalhadas).
+        "info"(padrão): Mostra mensagens informativas.
+        "warning": mostra avisos e erros.
+        "error": Mostra apenas erros.
+
+    # reload (opcional, padrão: True): Esta configuração permite o recarregamento automático 
+    '''
+
