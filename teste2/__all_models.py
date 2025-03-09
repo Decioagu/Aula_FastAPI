@@ -1,1 +1,1 @@
-from model import Filmes
+from curso_model import CursoModel

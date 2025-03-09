@@ -115,6 +115,37 @@ __PROJETO HOTEL__
 ---
 
 **Aula_08**
+
+- __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas. Além de funcionar como ORM, SQLAlchemy também oferece ferramentas para executar consultas SQL diretamente. Para usar o __SQLAlchemy de forma assíncrona__, você precisa usar sua versão com suporte assíncrono igual ou superior ao SQLAlchemy 1.4.
+
+- O __greenlet__ é uma biblioteca que permite a execução de corrotinas (funções assíncronas) sem bloquear a execução do código. Ele é fundamental para o SQLAlchemy quando se usa asyncio.
+    - __INSTALAÇÃO =>__ pip install greenlet
+
+- Para utilizar o SQLAlchemy de forma assíncrona com __SQLite__, é necessário instalar o driver __aiosqlite__, que permite que o SQLAlchemy funcione de maneira assíncrona com o __SQLite__: 
+    - __INSTALAÇÃO =>__ pip install aiosqlite
+    - __USO =>__ engine = create_async_engine("sqlite+aiosqlite:///nome_do_banco.db", echo=True)
+
+- Para utilizar o SQLAlchemy de forma assíncrona com __MySQL__, é necessário instalar o driver __aiomysql__, que permite que o SQLAlchemy funcione de maneira assíncrona com o __MySQL__:
+    - __INSTALAÇÃO =>__ pip install aiomysql
+    - __USO =>__ engine = create_async_engine("mysql+aiomysql://usuario:senha@localhost/nome_do_banco", echo=True)
+
+- Para utilizar o SQLAlchemy de forma assíncrona com  __PostgreSQL__, é necessário instalar o driver __asyncpg__, que permite que o SQLAlchemy funcione de maneira assíncrona com o  __PostgreSQL__:
+    - __INSTALAÇÃO =>__ pip install asyncpg
+    - __USO =>__ engine = create_async_engine("postgresql+asyncpg://usuario:senha@localhost:5432/nome_do_banco", echo=True)
+
+- OBS: O argumento __"echo=True"__ é um recurso de depuração e registro. Quando definido como True, o SQLAlchemy imprimirá todas as instruções SQL que ele executar no console (saída padrão).
+
+- __config__ (Banco de Dados): configurações de integração do Banco de dados
+- __Models__ (modelos): gerencia e valida __dados de transição entre API e Banco de Dados__
+
+- Pasta e arquivos:
+    - config:
+        - __.\config\conf_db.py__: gerenciamento do tipo de Banco de Dados
+Banco de Dados.
+    - models:
+        - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
+        - __.\models\curso_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+    - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
 ---
 
 **Aula_09**
@@ -123,17 +154,14 @@ __CRUD com FastAPI e SQL ALchemy__
 
 - __api__ (recursos): são recursos de acesso aos dados por meio de métodos, __regras de negocio__
 
-- __config__ (Banco de Dados): configurações de integração do Banco de dados
 
 - __Schemas__ (modelos): gerencia e valida __dados entrada e saída da API__
 
-- __Models__ (modelos): gerencia e valida __dados de transição entre API e Banco de Dados__
 
 - Pasta e arquivos:
     - config:
-        - __.\config\configs.py__: gerenciamento de endereço e tipo de Banco de Dados
-        - __.\config\criar_tabelas.py__: gerenciamento de sessão (Ação ao Banco de Dados)
-        - __.\config\deps.py__: função auxiliar usada como dependência para injeção de sessão no Banco de Dados.
+        - __.\config\conf_db.py__: gerenciamento do tipo de Banco de Dados
+Banco de Dados.
     - models:
         - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
         - __.\models\curso_model.py__: (modelos) => modelagem da dados (Banco de Dados)

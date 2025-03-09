@@ -4,17 +4,16 @@ import os
 # Adicionar o caminho do diretório pai ao sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from config_db3.conf_db import engine, DBBaseModel
+from config.conf_db import engine, DBBaseModel # Configuração Banco de Dados
 
 async def create_tables() -> None:
     
-    
     # Importando modelos antes da criação das tabelas
-    import model
+    import model.__all_models
     print('Criando as tabelas no banco de dados...')
 
     async with engine.begin() as conn:
-        print(DBBaseModel.metadata.tables.keys())
+        print(DBBaseModel.metadata.tables.keys()) # Exibir nome da tabela
         await conn.run_sync(DBBaseModel.metadata.drop_all) # Apagar Tabela
         await conn.run_sync(DBBaseModel.metadata.create_all) # Criar Tabela
     print('Tabelas criadas com sucesso...')

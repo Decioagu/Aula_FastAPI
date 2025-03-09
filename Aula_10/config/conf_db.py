@@ -13,19 +13,6 @@ DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/faculdade.db" # SQLite
 
 DBBaseModel = declarative_base()
 
-# ================================== ROTAS API =================================
-from pydantic_settings import BaseSettings
-
-#  Gerenciar configurações de aplicativos
-class Settings(BaseSettings):
-    API_V1_STR: str = '/api/v1' # anotação rota
-    
-    # Define que as variáveis de ambiente no Pydantic devem ser sensíveis a maiúsculas e minúsculas.
-    class Config:
-        case_sensitive = True
-
-settings = Settings()
-
 # ========================= SESSÃO BANCO DE DADOS =============================
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
@@ -54,3 +41,15 @@ async def get_session() -> Generator:
     finally:
         await session.close() # Fechar sessão
 
+# ========================= ROTAS API (RECURSOS) ===============================
+from pydantic_settings import BaseSettings
+
+#  Gerenciar configurações de aplicativos
+class Settings(BaseSettings):
+    API_V1_STR: str = '/api/v1' # anotação rota
+    
+    # Define que as variáveis de ambiente no Pydantic devem ser sensíveis a maiúsculas e minúsculas.
+    class Config:
+        case_sensitive = True
+
+settings = Settings()
