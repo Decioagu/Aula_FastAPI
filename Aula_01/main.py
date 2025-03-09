@@ -1,38 +1,39 @@
 from fastapi import FastAPI # API
 from pydantic import BaseModel # criação de modelo
 
-# modelagem e validação tipo
+# Modelagem
 class Produto(BaseModel):
-    id: int
-    nome: str
-    preco: float
-    em_oferta: bool = False
+    # (modelo: tipo = valor)
+    id: int # validação de tipo
+    nome: str # validação de tipo
+    preco: float # validação de tipo
+    em_oferta: bool = False # validação de tipo
 
-# instanciar API
-app = FastAPI()
+# instanciar API (Descrição de documento)
+app = FastAPI(title='Aula 01', version='0.0.1')
 
-# rotas (lista de produtos => rotas)
+# Lista de produtos
 produtos = [
-    Produto(id=1, nome='Playstation 5', preco=5745.55, em_oferta=True),
-    Produto(id=2, nome='Nintendo Wii', preco=2654.12),
-    Produto(id=3, nome='Xbox 360', preco=1765.34, em_oferta=True),
-    Produto(id=4, nome='Super Nintendo', preco=234.67),
-    Produto(id=5, nome='Atari 2600', preco=199.90, em_oferta=True),
+    Produto(id=1, nome='Playstation 5', preco=5745.55, em_oferta=True), # Modelagem 
+    Produto(id=2, nome='Nintendo Wii', preco=2654.12), # Modelagem 
+    Produto(id=3, nome='Xbox 360', preco=1765.34, em_oferta=True), # Modelagem 
+    Produto(id=4, nome='Super Nintendo', preco=234.67), # Modelagem 
+    Produto(id=5, nome='Atari 2600', preco=199.90, em_oferta=True), # Modelagem 
 ]
 
-# rota (home)
-@app.get('/')
-async def index():
-   return {"msg": "Décio santana de Aguiar"}
 
-# rota (busca)
-@app.get('/produtos/')
-async def buscar_produtos():
+@app.get('/')# rota (home)
+async def index(): # recurso GET
+   return {"http://127.0.0.1:8000/docs"}
+
+
+@app.get('/produtos/') # rota (busca)
+async def buscar_produtos(): # recurso GET
     return produtos
 
-# rota (busca por id)
-@app.get('/produtos/{id}')
-async def buscar_produto_por_id(id: int):
+
+@app.get('/produtos/{id}') # rota (busca por id)
+async def buscar_produto_por_id(id: int): # recurso GET
     for produto in produtos:
         if produto.id == id:
             return produto
@@ -46,6 +47,7 @@ async def buscar_produto_por_id(id: int):
 # ACESSO:
 # Pasta Aula_01: cd .\Aula_01\
 # Acesso ao terminal: uvicorn main:app --reload
+
 # Acesso ao terminal: uvicorn Aula_01.main:app --reload
 
 # Acesso: http://127.0.0.1:8000 

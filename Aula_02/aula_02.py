@@ -1,5 +1,4 @@
 # Seção 3 (FastAPI - APIs Modernas e Assíncronas com Python)
-# alua 10 até 16
 from fastapi import FastAPI, HTTPException, status, Response
 from pydantic import BaseModel
 from typing import Optional
@@ -12,86 +11,97 @@ Ex:
 '''
 
 # modelagem e validação tipo (tratamento de entrada do usuário)
-class Curso(BaseModel):
+class Hotel(BaseModel):
     # (modelo: tipo = valor)
-    titulo: str
-    aulas: Optional[int] = 1
-    horas: int
+    hotel_id: str
+    nome: str
+    estrelas: Optional[float] = None
+    diaria: Optional[float] = None
+    cidade: str
 
-# instanciar API
-app = FastAPI(title='Aula 02', version='0.0.1', description= 'Alua 10 até 16')
-
-# dados iniciais
-cursos = {
-            1: {
-                "titulo": "Programação para Leigos",
-                "aulas": 112,
-                "horas": 58
-            },
-            2: {
-                "titulo": "Algoritmos e logica de programação",
-                "aulas": 87,
-                "horas": 43
-            }
+# lista de hotéis (dados hoteis)
+hoteis = [
+        {
+        'hotel_id': 'alpha',
+        'nome': 'Alpha Hotel',
+        'estrelas': 4.3,
+        'diaria': 420.34,
+        'cidade': 'Rio de Janeiro'
+        },
+        {
+        'hotel_id': 'bravo',
+        'nome': 'Bravo Hotel',
+        'estrelas': 4.4,
+        'diaria': 380.90,
+        'cidade': 'Santa Catarina'
+        },
+        {
+        'hotel_id': 'charlie',
+        'nome': 'Charlie Hotel',
+        'estrelas': 3.9,
+        'diaria': 320.20,
+        'cidade': 'Santa Catarina'
         }
+]
+
+# instanciar API (Descrição de documento)
+app = FastAPI(title='Aula 02', version='0.0.2', description= 'Alua 10 até 16')
 
 # rota
 @app.get('/')
 async def get_site():
-    return 'Abra===> http://127.0.0.1:8000/docs'
+    return 'http://127.0.0.1:8000/docs'
 
 # rota (Ler todos os dados)
-@app.get('/cursos')
-async def get_cursos():
-    return cursos
+@app.get('/hoteis')
+async def get_hoteis(): # CRUD método GET
+    return hoteis
 
-# rota (Ler dados por id)
-@app.get('/cursos/{curso_id}')
-async def get_curso_por_id(curso_id: int):
+# rota (Ler dados Hotel por id)
+@app.get('/hoteis/{hotel_id}')
+async def get_hotel_por_id(hotel_id: str): # CRUD método GET
     try:
-        curso = cursos[curso_id]
-        return curso
+        for hotel in hoteis:
+            if hotel["hotel_id"] == hotel_id:
+                return hotel
     except KeyError:
         # Tratamento de id não existente
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Hotel não encontrado')
     
-# rota (Criar novo curso)
-@app.post('/cursos', status_code=status.HTTP_201_CREATED)
-async def post_curso(curso: Curso):
+# rota (Criar novo Hotel)
+@app.post('/hoteis', status_code=status.HTTP_201_CREATED)
+async def post_hotel(hotel: Hotel): # CRUD método POST
     
-    # ======================================================
-    # adição de novo id com maior valor existente na lista "cursos"
-    proximo_id = 0 # nova chave
-    for id in cursos.keys():
-        print(id)
-        if id > proximo_id:
-            proximo_id = id
-    proximo_id += 1
-    # ======================================================
+    # Verificar se já existe um hotel com o mesmo ID
+    for h in hoteis:
+        if h["hotel_id"] == hotel.hotel_id:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Hotel ID já existe")
 
-    cursos[proximo_id] = curso
-    return cursos
+    hoteis.append(hotel.model_dump())  # Converte o modelo Pydantic para dicionário
+    return hotel
 
-# rota (Atualizar novo curso por id)
-@app.put('/cursos/{curso_id}')
-async def put_curso(curso_id: int, curso: Curso):
-    if curso_id in cursos:
-        cursos[curso_id] = curso
-        return curso
+# rota (Atualizar novo Hotel por id)
+@app.put('/hoteis/{hotel_id}')
+async def put_hotel(hotel_id: str, hotel: Hotel): # CRUD método PUT
+    for i, h in enumerate(hoteis):
+        if h["hotel_id"] == hotel_id:
+            hoteis[i] = hotel.model_dump() # Converte o modelo Pydantic para dicionário
+            return hotel
     else:
         # tratar id inexistente
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Hotel não encontrado')
 
     
-# rota (Deletar novo curso por id)
-@app.delete('/cursos/{curso_id}')
-async def delete_curso(curso_id: int):
-    if curso_id in cursos:
-        del cursos[curso_id] # eliminar id do corpo do dados
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
+# rota (Deletar novo Hotel por id)
+@app.delete('/hoteis/{hotel_id}')
+async def delete_hotel(hotel_id: str): # CRUD método DELETE
+    for i, h in enumerate(hoteis):
+        if h["hotel_id"] == hotel_id:
+            del hoteis[i]
+            return Response(content="Hotel deletado com sucesso!!!", status_code=status.HTTP_200_OK)
     else:
         # tratar id inexistente
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail='Curso não encontrado')
+        raise HTTPException(detail='Hotel não encontrado', status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 if __name__ == 'main':
     
