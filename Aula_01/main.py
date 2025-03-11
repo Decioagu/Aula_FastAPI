@@ -1,5 +1,5 @@
 from fastapi import FastAPI # API
-from pydantic import BaseModel # criação de modelo
+from pydantic import BaseModel # criação de modelo 
 
 # Modelagem
 class Produto(BaseModel):
@@ -40,8 +40,8 @@ async def buscar_produto_por_id(id: int): # recurso GET
     return None
 
 # PACOTES:
-# pip instal fastapi
-# pip instal uvicorn
+# pip install fastapi
+# pip install uvicorn
 # pip install pydantic
 
 # ACESSO:
