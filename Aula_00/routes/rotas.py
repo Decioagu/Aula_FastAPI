@@ -19,3 +19,5 @@ async def buscar_produto_por_id(id: int): # recurso GET
         if produto.id == id:
             return produto
     return None
+
+x='dsa'
