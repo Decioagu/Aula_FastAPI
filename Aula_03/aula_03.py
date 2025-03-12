@@ -63,7 +63,7 @@ hoteis = [
 app = FastAPI(title='Aula 03', version='0.0.3', description= 'Alua 21 e 23')
 
 # rota (mensagem na home da documentação)
-@app.get('/', description='Retorna uma mensagem', summary='Mensagem')
+@app.get('/', description='Retorna uma mensagem', summary='Mensagem', tags=["Documentação"] )
 async def get_site():
     return 'http://127.0.0.1:8000/docs'
 

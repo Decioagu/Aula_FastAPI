@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 
-from config.conf_db import engine
+from core.database import engine
 
 
 async def create_tables() -> None:

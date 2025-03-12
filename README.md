@@ -72,6 +72,7 @@ __PROJETO HOTEL__
     - __@app.get()__:
         - description= 'SUA_MENSAGEM'
         - summary= 'SUA_MENSAGEM'
+        - tags=["SUA_MENSAGEM"]
         
         - Exp: @app.get('/', description='Retorna uma mensagem', summary='Mensagem')
 ---
@@ -116,6 +117,46 @@ __PROJETO HOTEL__
 
 **Aula_08**
 
+__ROTAS__
+
+- O método __app.include_router(rotas)__ é utilizado no FastAPI para incluir um roteador (APIRouter) dentro da aplicação principal. Isso ajuda a agrupar rotas.
+- O __APIRouter__ funciona como um "mini aplicativo" dentro do FastAPI, onde você pode definir endpoints (Rotas: GET, POST, PUT e DELETE) separadamente e depois incluí-los na aplicação principal com __app.include_router()__.
+
+Exp:
+from fastapi import FastAPI, APIRouter
+
+# Instanciar API
+app = FastAPI() 
+
+# Criando um roteador
+rotas = APIRouter()
+
+# Rota GET
+@rotas.get("/")
+async def listar_itens():
+    return {"mensagem": "Lista de itens"}
+
+# Rota POST
+@rotas.post("/")
+async def criar_item(item: dict):
+    return {"mensagem": "Item criado", "item": item}
+
+# Incluindo o roteador na aplicação principal
+app.include_router(rotas)
+
+if __name__ == 'main':
+    
+    from uvicorn import run 
+
+    run('TESTE:app', host="127.0.0.1", port=8000, reload=True)
+
+# uvicorn TESTE:app --reload
+---
+
+**Aula_09**
+
+__CRUD com FastAPI e SQL ALchemy__
+
 - __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas. Além de funcionar como ORM, SQLAlchemy também oferece ferramentas para executar consultas SQL diretamente. Para usar o __SQLAlchemy de forma assíncrona__, você precisa usar sua versão com suporte assíncrono igual ou superior ao SQLAlchemy 1.4.
 
 - O __greenlet__ é uma biblioteca que permite a execução de corrotinas (funções assíncronas) sem bloquear a execução do código. Ele é fundamental para o SQLAlchemy quando se usa asyncio.
@@ -135,59 +176,53 @@ __PROJETO HOTEL__
 
 - OBS: O argumento __"echo=True"__ é um recurso de depuração e registro. Quando definido como True, o SQLAlchemy imprimirá todas as instruções SQL que ele executar no console (saída padrão).
 
-- __config__ (Banco de Dados): configurações de integração do Banco de dados
-- __Models__ (modelos): gerencia e valida __dados de transição entre API e Banco de Dados__
-
 - Pasta e arquivos:
     - config:
         - __.\config\conf_db.py__: gerenciamento do tipo de Banco de Dados
-Banco de Dados.
     - models:
         - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
         - __.\models\curso_model.py__: (modelos) => modelagem da dados (Banco de Dados)
     - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
+    - schemas:
+        - __.\schemas\curso_schemas.py__: (modelos) => modelagem da dados (API)
+
+- __config__ (Banco de Dados): __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas.
+- __models__ (modelos): são estruturas de tabelas e colunas (Ligados diretamente ao Banco de Dados), geralmente criadas usando SQLAlchemy, também são estruturas que definem o __schemas__ das tabelas de uma API. 
+- __schemas__ (modelos Pydantic): são estruturas de dados (Não ligados diretamente ao Banco de Dados) de entrada e saída de uma API  em forma de JSON, essenciais para validar, organizar e documentar informações de uma API.
 ---
 
-**Aula_09**
+**Aula_10**
 
 __CRUD com FastAPI e SQL ALchemy__
 
-- __api__ (recursos): são recursos de acesso aos dados por meio de métodos, __regras de negocio__
+- Pasta e arquivos:
+    - routes:
+        - __.\routes\api.py__: gerenciamento de Rotas (CRUD)
+        - __.\routes\v1\curso_CRUD.py.py__: (recursos) => CRUD usuário
+    - config:
+        - __.\config\conf_db.py__: gerenciamento de variável de ambiente (Rotas)
+    - __main.py__: adição de um roteador à aplicação principal (Rotas).
+    
+- main.py:
+    - __app.include_router()__: é o método usado para organizar e modularizar a aplicação, permitindo a inclusão de roteadores (APIRouter).
+- api.py:
+    - O __APIRouter()__ é um objeto que funciona como um "mini FastAPI", onde podemos definir rotas, como GET, POST, PUT e DELETE na aplicação principal com auxilio de __app.include_router()__.
+- conf_db.py:
+    - __BaseSettings__ serve para gerenciar configurações de forma eficiente e segura, utilizando o Pydantic para validação e carregamento de variáveis de ambiente.
+---
 
 
-- __Schemas__ (modelos): gerencia e valida __dados entrada e saída da API__
+**Aula_11**
 
+__CRUD com FastAPI e SQL ALchemy__
 
 - Pasta e arquivos:
+    - api:
+        - __.\api\api.py__: pasta e arquivo excluído
+        - __.\api\v1\curso_CRUD.py.py__: pasta e arquivo excluído
+    - routes:
+        - __.\routes\curso_CRUD.py.py__: (recursos) => CRUD, apontamento direto das (Rotas) p\ aplicação principal
     - config:
-        - __.\config\conf_db.py__: gerenciamento do tipo de Banco de Dados
-Banco de Dados.
-    - models:
-        - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
-        - __.\models\curso_model.py__: (modelos) => modelagem da dados (Banco de Dados)
-    - schemas:
-        - __.\schemas\curso_schemas.py__: (modelos) => modelagem da dados (API)
+        - __.\config\conf_db.py__: eliminação de __BaseSettings__
+    - main.py: simplificação roteador da aplicação principal (Rotas).
 ---
-
-- A separação de rotas em FastAPI por __"tags"__ é uma técnica poderosa para organizar e documentar suas APIs de forma mais intuitiva e eficiente. Ela permite agrupar rotas relacionadas na __documentação__.
----
-
-**Aula_xxx**
-
-- main.py: instanciar projeto
-
-- criar_tabelas.py: 
-
-- api: projeto
-
-- core: pasta de utilização comum ao projeto
-    - configs.py: gerenciamento e configuração Banco de Dados
-    - database.py: conexão ao Banco de Dados
-    - deps.py: consulta Banco de dados
-
-- models: pasta de modelagem
-    - __all_models.py: 
-    - curso_model.py: modelagem do Banco de Dados
-
-- schemas: pasta descrição da estrutura dos dados
-     - curso_schema.py: modelagem do API para Banco de Dados "curso_model.py"

@@ -1,27 +1,28 @@
+from fastapi import FastAPI, APIRouter
 
-# Modelo 1:
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-# Adiciona ao sys.path o próprio diretório onde o script está sendo executado (__file__).
+# Instanciar API
+app = FastAPI() 
 
-# Modelo 2:
-import sys
-import os
+# Criando um roteador
+rotas = APIRouter()
 
-# Adicionar o caminho do diretório pai ao sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-# Adiciona o diretório pai (diretório acima do diretório onde o script está) ao sys.path.
+# Rota GET
+@rotas.get("/")
+async def listar_itens():
+    return {"mensagem": "Lista de itens"}
 
-'''
-Ambos os códigos Python têm o objetivo de modificar o sys.path:
-Suponha a seguinte estrutura de diretórios:
+# Rota POST
+@rotas.post("/")
+async def criar_item(item: dict):
+    return {"mensagem": "Item criado", "item": item}
 
-projeto/
-├── principal.py
-├── modulo_auxiliar.py
-└── subdiretorio/
-    └── outro_modulo.py
-Se (principal.py) usar o Modelo 1, ele poderá importar (modulo_auxiliar.py) diretamente.
-Se (principal.py) usar o Modelo 2, ele poderá importar (outro_modulo.py) de subdiretorio/.
-'''
+# Incluindo o roteador na aplicação principal
+app.include_router(rotas)
+
+if __name__ == 'main':
+    
+    from uvicorn import run 
+
+    run('TESTE:app', host="127.0.0.1", port=8000, reload=True)
+
+# uvicorn TESTE:app --reload

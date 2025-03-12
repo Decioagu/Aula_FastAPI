@@ -1,1 +1,0 @@
-from model.curso_model import CursoModel

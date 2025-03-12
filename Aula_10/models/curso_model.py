@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from config.conf_db import DBBaseModel ### Configurações Banco de Dados
 
-# modelagem e validação tipo  
+# Modelagem (BANCO DE DADOS)  
 class CursoModel(DBBaseModel):
     __tablename__ = 'cursos'
     # (modelo: tipo = Coluna(tipo valor coluna))

@@ -1,19 +1,19 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI
 import sys
 import os
 
 # Caminho
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from routes.rotas import router as rotas
+from routes.rotas import rota
 
 # instanciar API
 app = FastAPI(
-             title='Aula_07',
-             version='0.0.7',
-             description= 'Alua 21'
+             title='Aula_08',
+             version='0.0.8',
+             description= 'Alua 31'
              )
 
-# Incluir as rotas
+# Agrupamento de rotas 
 app.include_router(rotas)
 
 if __name__ == 'main':

@@ -8,7 +8,7 @@ criação de modelos de dados com validação e tipagem automática.
 
 "Optional" é um tipo genérico que representa um valor que pode ser do tipo especificado ou None
 '''
-# modelagem e validação tipo
+# Modelagem (API)
 class CursoSchema(SCBaseModel):
     # (modelo: tipo)
     id: Optional[int]
@@ -17,8 +17,22 @@ class CursoSchema(SCBaseModel):
     horas: int
     
     '''
-    Essa class permite que o Pydantic converta automaticamente 
-    modelos do SQLAlchemy (ORM) em dicionários compatíveis com JSON
+    O atributo orm_mode = True permite que o Pydantic converta objetos do 
+    Banco de Dados no modelos do SQLAlchemy em dicionários compatíveis com JSON.
     '''
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+# Modelagem (API)
+class CursoSchemaSemID(SCBaseModel): # Para POST => Id automático
+    # (modelo: tipo)
+    titulo: str
+    aulas: int
+    horas: int
+    
+    '''
+    O atributo "from_attributes = True" permite que o Pydantic converta objetos do 
+    Banco de Dados no modelos do SQLAlchemy em dicionários compatíveis com JSON.
+    '''
+    class Config:
+        from_attributes = True

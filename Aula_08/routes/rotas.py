@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from fastapi import APIRouter
 from typing import List
-from dados.database import cursos, Curso
+from models.database import cursos, Curso
 
 router = APIRouter()
 
