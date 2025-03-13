@@ -117,7 +117,7 @@ __PROJETO HOTEL__
 
 **Aula_08**
 
-__ROTAS__
+__ROTEADOR DE ROTAS__
 
 - O método __app.include_router(rotas)__ é utilizado no FastAPI para incluir um roteador (APIRouter) dentro da aplicação principal. Isso ajuda a agrupar rotas.
 - O __APIRouter__ funciona como um "mini aplicativo" dentro do FastAPI, onde você pode definir endpoints (Rotas: GET, POST, PUT e DELETE) separadamente e depois incluí-los na aplicação principal com __app.include_router()__.
@@ -182,9 +182,9 @@ __CRUD com FastAPI e SQL ALchemy__
     - models:
         - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
         - __.\models\curso_model.py__: (modelos) => modelagem da dados (Banco de Dados)
-    - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
     - schemas:
         - __.\schemas\curso_schemas.py__: (modelos) => modelagem da dados (API)
+    - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
 
 - __config__ (Banco de Dados): __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas.
 - __models__ (modelos): são estruturas de tabelas e colunas (Ligados diretamente ao Banco de Dados), geralmente criadas usando SQLAlchemy, também são estruturas que definem o __schemas__ das tabelas de uma API. 
@@ -201,7 +201,7 @@ __CRUD com FastAPI e SQL ALchemy__
         - __.\routes\v1\curso_CRUD.py.py__: (recursos) => CRUD usuário
     - config:
         - __.\config\conf_db.py__: gerenciamento de variável de ambiente (Rotas)
-    - __main.py__: adição de um roteador à aplicação principal (Rotas).
+    - __main.py__: adição de roteador à aplicação principal (Rotas).
     
 - main.py:
     - __app.include_router()__: é o método usado para organizar e modularizar a aplicação, permitindo a inclusão de roteadores (APIRouter).
@@ -214,15 +214,41 @@ __CRUD com FastAPI e SQL ALchemy__
 
 **Aula_11**
 
-__CRUD com FastAPI e SQL ALchemy__
+__CRUD com FastAPI e SQL Model__
+
+- __SQLModel__ é uma biblioteca Python que facilita a interação com bancos de dados SQL, combinando o poder do Pydantic para validação de dados com a flexibilidade do SQLAlchemy para interagir com o banco de dados.
 
 - Pasta e arquivos:
-    - api:
-        - __.\api\api.py__: pasta e arquivo excluído
-        - __.\api\v1\curso_CRUD.py.py__: pasta e arquivo excluído
-    - routes:
-        - __.\routes\curso_CRUD.py.py__: (recursos) => CRUD, apontamento direto das (Rotas) p\ aplicação principal
     - config:
-        - __.\config\conf_db.py__: eliminação de __BaseSettings__
-    - main.py: simplificação roteador da aplicação principal (Rotas).
+        - __.\config\conf_db.py__: gerenciamento do tipo de Banco de Dados
+    - models:
+        - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
+        - __.\models\curso_model.py__: (modelos) => modelagem da dados (API e Banco de Dados)
+    - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
 ---
+
+**Aula_12**
+
+__CRUD com FastAPI e SQL Model__
+
+- Pasta e arquivos:
+    - routes:
+        - __.\routes\api.py__: gerenciamento de Rotas (CRUD)
+        - __.\routes\v1\curso_CRUD.py.py__: (recursos) => CRUD usuário
+    - __main.py__: adição de roteador à aplicação principal (Rotas).
+---
+
+**Aula_13**
+
+- Escolha a instalação e manipulação de um Banco de dados SQLite ou MySQL:
+    - __Resumo da aplicação SQL Alchemy em FastAPI com CRUD__
+---
+
+**Aula_14**
+
+---
+
+**Any**
+**SQLAlchemy**
+**SQLite**
+**Documentos**
