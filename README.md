@@ -234,8 +234,14 @@ __CRUD com FastAPI e SQL Model__
 - Pasta e arquivos:
     - routes:
         - __.\routes\api.py__: gerenciamento de Rotas (CRUD)
-        - __.\routes\v1\curso_CRUD.py.py__: (recursos) => CRUD usuário
+        - __.\routes\v1\curso_CRUD.py__: (recursos) => CRUD usuário
     - __main.py__: adição de roteador à aplicação principal (Rotas).
+
+- curso_CRUD.py:
+    - __select__ é uma maneira mais moderna e recomendada de fazer consultas SQL no SQLAlchemy.
+        - Equivalência entre os filtros:
+            - query = select(CursoModel) <==> query = db.query(CursoModel).all()
+    - 
 ---
 
 **Aula_13**
@@ -245,6 +251,8 @@ __CRUD com FastAPI e SQL Model__
 ---
 
 **Aula_14**
+
+__Autenticação JWT com FastAPI e SQL ALchemy__
 
 ---
 

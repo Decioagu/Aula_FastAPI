@@ -1,7 +1,11 @@
 from fastapi import APIRouter
 
-from routes.v1.endpoints import curso_CRUD
+from api.v1.endpoints import artigo
+from api.v1.endpoints import usuario
 
-api_router = APIRouter() # roteador
-api_router.include_router(curso_CRUD.rota_cursos, prefix='/cursos', tags=["cursos"]) # (inclusão de roteadores) 
 
+api_router = APIRouter()
+
+api_router.include_router(artigo.router, prefix='/artigos', tags=['artigos'])
+api_router.include_router(
+    usuario.router, prefix='/usuarios', tags=['usuarios'])

@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends, status
-from sqlalchemy import Column, String, Float, create_engine, inspect, text # Criar Banco de Dados
+from sqlalchemy import Column, String, Float, create_engine, inspect, text, select # Criar Banco de Dados
 from sqlalchemy.ext.declarative import declarative_base # Modelagem do Banco de Dados
 from sqlalchemy.orm import sessionmaker, Session # Interação no Banco de Dados
 from pathlib import Path # Caminho do Banco de Dados SQLite
@@ -22,23 +22,11 @@ def sqlite():
 
     return DATABASE_URL
 
-# =============== CONEXÃO BANCO DE DADOS (MYSQL) ================
-def mysql():
-    # Conectar ao banco MySQL
-    engine = create_engine('mysql+pymysql://root:Enigma.1@localhost:3306')
-
-    # Criar o banco de dados "cinema_03" (CASO NÃO EXISTA)
-    with engine.connect() as connection:
-        connection.execute(text("CREATE DATABASE IF NOT EXISTS meu_hotel"))
-
-    DATABASE_URL: str = 'mysql+pymysql://root:Enigma.1@localhost:3306/meu_hotel' # MySQL
-
-    return DATABASE_URL
 
 # =========== CONFIGURAÇÃO BANCO DE DADOS SQL ALCHEMY ===========
 # Conexão
-# engine = create_engine(sqlite()) # <= Retire do comentário para SQLite
-engine = create_engine(mysql())  # <= Retire do comentário para MySQL
+engine = create_engine(sqlite()) # <= Retire do comentário para SQLite
+
 # Interação Banco
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
 # Modelagem Banco de Dados
@@ -111,7 +99,11 @@ async def get_site():
 # Endpoints
 @app.get("/hoteis")
 def get_hoteis(db: Session = Depends(get_db)):
-    hoteis = db.query(HotelModel).all()
+    query = select(HotelModel)
+    hoteis = db.execute(query)  # Executa a consulta
+    return hoteis.scalars().all()  # Retorna a lista de usuários
+
+    # hoteis = db.query(HotelModel).all()
     return hoteis
 
 @app.get("/hotel/{hotel_id}")

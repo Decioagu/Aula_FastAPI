@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException, Response
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+from sqlalchemy.future import select # Cria uma consulta para selecionar todos os usuários
 
 from models.curso_model import CursoModel # Modelagem Banco de Dados
 from config.conf_db import get_session # Abrir e fechar Sessão
@@ -20,7 +20,6 @@ from sqlmodel.sql.expression import Select, SelectOfScalar
 SelectOfScalar.inherit_cache = True  # type: ignore
 Select.inherit_cache = True  # type: ignore
 # Fim Bypass ===============================================
-
 
 rota_cursos = APIRouter() # roteador
 
