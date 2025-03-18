@@ -1,10 +1,10 @@
 from sqlalchemy import Integer, String, Column, Boolean
 from sqlalchemy.orm import relationship
 
-from core.configs import settings
+from config.conf_db import DBBaseModel
 
 
-class UsuarioModel(settings.DBBaseModel):
+class UsuarioModel(DBBaseModel):
     __tablename__ = 'usuarios'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -19,4 +19,4 @@ class UsuarioModel(settings.DBBaseModel):
         back_populates="criador",
         uselist=True,
         lazy="joined"
-    )
+    ) # relacionamento

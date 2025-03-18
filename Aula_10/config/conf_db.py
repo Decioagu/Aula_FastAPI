@@ -11,14 +11,15 @@ from sqlalchemy.ext.declarative import declarative_base
 DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/faculdade.db" # SQLite
 # DB_URL: str = 'mysql+aiomysql://root:Enigma.1@localhost:3306/faculdade' # MySQL
 
-DBBaseModel = declarative_base()
+# Modelagem para Banco de Dados
+DBBaseModel = declarative_base() 
 
 # ========================= SESSÃO BANCO DE DADOS =============================
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
 # conexão do Banco de Dados (ENDEREÇO BANCO DE DADOS)
-engine: AsyncEngine = create_async_engine(DB_URL, echo=False)
+engine: AsyncEngine = create_async_engine(DB_URL, echo=False) 
 
 # Cria sessão de Banco de Dados assíncrono (INTERAÇÃO)
 Session: AsyncSession = sessionmaker(
@@ -32,7 +33,7 @@ Session: AsyncSession = sessionmaker(
 from typing import Generator
 from sqlalchemy.ext.asyncio import AsyncSession
 
-# consulta no Banco de Dados
+# Consulta no Banco de Dados
 async def get_session() -> Generator:
     session: AsyncSession = Session()
 

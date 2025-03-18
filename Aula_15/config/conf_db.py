@@ -6,15 +6,21 @@ from pathlib import Path # Pasta
 # Criando uma engine para um banco SQLite (ou pode ser MySQL, PostgreSQL etc.)
 caminho_do_arquivo = Path(__file__).parent.parent
 
-# ========================= ROTAS API (RECURSOS) ===============================
 # ======================= CONEXÃO BANCO DE DADOS ===============================
+from sqlalchemy.ext.declarative import declarative_base
+
+# Definição direta da URL do banco de dados
+DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/faculdade.db" # SQLite
+# DB_URL: str = 'mysql+aiomysql://root:Enigma.1@localhost:3306/faculdade' # MySQL
+
+DBBaseModel = declarative_base()
+
+# ========================= ROTAS API (RECURSOS) ===============================
 from pydantic_settings import BaseSettings
 
 #  Gerenciar configurações de aplicativos
 class Settings(BaseSettings):
     API_V1_STR: str = '/api/v1' # anotação rota
-    DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/faculdade.db" # SQLite
-    # DB_URL: str = 'mysql+aiomysql://root:Enigma.1@localhost:3306/faculdade' # MySQL
 
     JWT_SECRET: str = 'qS96E1oCfq5gEZH-ngD91NC2qkcl0cffhNTIDGpF4pw' # senha gerada em Token_JWT.py
     '''
@@ -40,7 +46,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 
 # conexão do Banco de Dados (ENDEREÇO BANCO DE DADOS)
-engine: AsyncEngine = create_async_engine(settings.DB_URL, echo=False)
+engine: AsyncEngine = create_async_engine(DB_URL, echo=False)
 
 # Cria sessão de Banco de Dados assíncrono (INTERAÇÃO)
 Session: AsyncSession = sessionmaker(
@@ -55,7 +61,7 @@ from typing import Generator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 # consulta no Banco de Dados
-async def get_session() -> Generator:
+async def get_session() -> Generator: # type: ignore
     session: AsyncSession = Session()
 
     try:
@@ -64,37 +70,3 @@ async def get_session() -> Generator:
         await session.close() # Fechar sessão
 
 # ============================================================================
-# async def get_current_user(db: Session = Depends(get_session), token: str = Depends(oauth2_schema)) -> UsuarioModel:
-#     credential_exception: HTTPException = HTTPException(
-#         status_code=status.HTTP_401_UNAUTHORIZED,
-#         detail='Não foi possível autenticar a credencial',
-#         headers={"WWW-Authenticate": "Bearer"},
-#     )
-
-#     try:
-#         payload = jwt.decode(
-#             token,
-#             settings.JWT_SECRET,
-#             algorithms=[settings.ALGORITHM],
-#             options={"verify_aud": False}
-#         )
-
-#         username: str = payload.get("sub")
-#         if username is None:
-#             raise credential_exception
-
-#         token_data: TokenData = TokenData(username=username)
-#     except JWTError:
-#         raise credential_exception
-
-#     async with db as session:
-#         query = select(UsuarioModel).filter(
-#             UsuarioModel.id == int(token_data.username))
-#         result = await session.execute(query)
-#         usuario: UsuarioModel = result.scalars().unique().one_or_none()
-
-#         if usuario is None:
-#             raise credential_exception
-
-#         return usuario
-

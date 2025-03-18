@@ -35,11 +35,8 @@ Base = declarative_base()
 # =================== INICIAR E FECHAR SESSÃO ====================
 # Dependência para obter sessão do banco
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    with Session(engine) as session:
+        yield session
 
 # ================= MODELAGEM DO BANCO DE DADOS ==================
 # Modelo do Banco de Dados
@@ -157,4 +154,4 @@ if __name__ == 'main':
 
     run('main:app', host="127.0.0.1", port=8000, reload=True)
 
-# uvicorn Aula_13.aula_13:app --reload
+# uvicorn Aula_11.aula_11:app --reload

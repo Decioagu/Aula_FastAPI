@@ -211,8 +211,13 @@ __CRUD com FastAPI e SQL ALchemy__
     - __BaseSettings__ serve para gerenciar configurações de forma eficiente e segura, utilizando o Pydantic para validação e carregamento de variáveis de ambiente.
 ---
 
-
 **Aula_11**
+
+- __Resumo da aplicação SQL Alchemy em FastAPI com CRUD__
+---
+
+
+**Aula_12**
 
 __CRUD com FastAPI e SQL Model__
 
@@ -227,7 +232,7 @@ __CRUD com FastAPI e SQL Model__
     - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
 ---
 
-**Aula_12**
+**Aula_13**
 
 __CRUD com FastAPI e SQL Model__
 
@@ -244,13 +249,12 @@ __CRUD com FastAPI e SQL Model__
     - 
 ---
 
-**Aula_13**
+**Aula_14**
 
-- Escolha a instalação e manipulação de um Banco de dados SQLite ou MySQL:
-    - __Resumo da aplicação SQL Alchemy em FastAPI com CRUD__
+- __Resumo da aplicação SQL MODEL em FastAPI com CRUD__
 ---
 
-**Aula_14**
+**Aula_15**
 
 __Autenticação JWT com FastAPI e SQL ALchemy__
 

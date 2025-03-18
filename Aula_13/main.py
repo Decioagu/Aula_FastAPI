@@ -21,4 +21,4 @@ if __name__ == '__main__':
 
     uvicorn.run("main:app", host="0.0.0.0", port=8000, log_level='info', reload=True)
 
-# uvicorn Aula_14.main:app --reload
+# uvicorn Aula_13.main:app --reload
