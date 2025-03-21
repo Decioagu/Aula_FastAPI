@@ -10,7 +10,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..")))
 from config.conf_db import settings, get_session
-from config.aut_jwt import oauth2_schema
+from Aula_16.config.auth import oauth2_schema
 from models.usuario_model import UsuarioModel
 
 class TokenData(BaseModel):

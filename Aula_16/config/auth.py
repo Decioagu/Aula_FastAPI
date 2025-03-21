@@ -1,38 +1,15 @@
 
 
-# Meus módulos
+# Meu módulo ...
+from security import verificar_senha
+
+import sys
+import os
+# Adicionar o caminho do diretório pai ao sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Meus módulos ...
 from models.usuario_model import UsuarioModel
 from config.conf_db import settings
-
-# ================== CONFIGURAÇÃO DE HASH SENHA ========================
-from passlib.context import CryptContext
-'''
-Gera senha do usuário e armazena de forma segura no Banco de Dados (hash seguro):
-
-Exemplo :
-Se um usuário se cadastra com a senha "minha_senha123", em vez de 
-salvar isso diretamente no banco o (hash seguro) salva assim:
-
-$2b$12$z6D4JHPM1pYYtUq8kGvF6OvTswXaJLoeRctGJY3rO.z2ToihG6hE2
-'''
-
-# Configuração do hash de senha
-CRIPTO = CryptContext(schemes=['bcrypt'], deprecated='auto')
-'''
-    - CryptContext(schemes=["bcrypt"]): Define que o algoritmo de hash utilizado 
-    será o bcrypt (considerado seguro e amplamente usado).
-
-    - deprecated="auto": Permite que o sistema continue aceitando senhas com 
-    hashes antigos caso o esquema seja atualizado no futuro.
-'''
-
-# Função para verificar senha
-def verificar_senha(senha: str, hash_senha: str) -> bool:
-    return CRIPTO.verify(senha, hash_senha)
-
-# Função para obter hash de senha
-def gerar_hash_senha(senha: str) -> str:
-    return CRIPTO.hash(senha)
 
 # ======================= AUTENTICAÇÃO ============================
 from pytz import timezone # manipular fusos horários em Python

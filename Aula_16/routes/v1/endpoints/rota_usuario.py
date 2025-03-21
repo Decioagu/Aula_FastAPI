@@ -11,7 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from models.usuario_model import UsuarioModel
 from schemas.usuario_schema import UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaUp, UsuarioSchemaArtigos
 from config.deps import get_session, get_current_user
-from config.aut_jwt import autenticar, criar_token_acesso, gerar_hash_senha
+from Aula_16.config.auth import autenticar, criar_token_acesso, gerar_hash_senha
 
 
 router = APIRouter()
