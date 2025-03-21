@@ -1,4 +1,10 @@
+from dotenv import load_dotenv 
+import os
 
+load_dotenv()
+
+nome_banco_de_dados = os.getenv('BANCO_DE_DADOS')
+senha_jwt = os.getenv('JWT_SECRET')
 
 # ========================= CAMINHO ARQUIVO SQLite ==============================
 from pathlib import Path # Pasta
@@ -10,9 +16,10 @@ caminho_do_arquivo = Path(__file__).parent.parent
 from sqlalchemy.ext.declarative import declarative_base
 
 # Definição direta da URL do banco de dados
-DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/faculdade.db" # SQLite
+DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/{nome_banco_de_dados}" # SQLite
 # DB_URL: str = 'mysql+aiomysql://root:Enigma.1@localhost:3306/faculdade' # MySQL
 
+# Modelagem Banco de Dados
 DBBaseModel = declarative_base()
 
 # ========================= ROTAS API (RECURSOS) ===============================
@@ -20,9 +27,9 @@ from pydantic_settings import BaseSettings
 
 #  Gerenciar configurações de aplicativos
 class Settings(BaseSettings):
-    API_V1_STR: str = '/api/v1' # anotação rota
+    API_V1_STR: str = '/routes/v1' # anotação rota
 
-    JWT_SECRET: str = 'qS96E1oCfq5gEZH-ngD91NC2qkcl0cffhNTIDGpF4pw' # senha gerada em Token_JWT.py
+    JWT_SECRET: str = senha_jwt # senha gerada em Token_JWT.py
     '''
     HS256 (HMAC + SHA-256): define o algoritmo de criptografia utilizado 
     para assinar e verificar os tokens JWT (JSON Web Token).

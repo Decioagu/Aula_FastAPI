@@ -10,7 +10,7 @@ DATABASE_URL = f"sqlite:///{caminho_do_arquivo}/meu_hotel.db"
 
 # ===================== CRIAR BANCO DE DADOS ======================
 # Conexão
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL)
 
 # =================== INICIAR E FECHAR SESSÃO ====================
 def get_db():
@@ -75,7 +75,8 @@ def put_hotel(hotel_id: str, hotel: Hotel, db: Session = Depends(get_db)):
     db_hotel = db.get(Hotel, hotel_id)
     if not db_hotel:
         raise HTTPException(status_code=404, detail="Hotel não encontrado")
-    hotel_dict = hotel.dict(exclude_unset=True)
+    # .model_dump(): dicionário
+    hotel_dict = hotel.model_dump(exclude_unset=True)
     for key, value in hotel_dict.items():
         setattr(db_hotel, key, value)
     db.commit()

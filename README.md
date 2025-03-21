@@ -18,7 +18,7 @@
 
 **Aula_02**
 
-__PROJETO HOTEL__
+__CRUD com FastAPI e BaseModel__
 
 - Tratamento de dados, resposta:
     - __HTTPException__: permite retornar respostas de erro personalizadas com códigos de status HTTP.
@@ -155,7 +155,7 @@ if __name__ == 'main':
 
 **Aula_09**
 
-__CRUD com FastAPI e SQL ALchemy__
+__CRUD com FastAPI, BaseModel e SQL ALchemy__
 
 - __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas. Além de funcionar como ORM, SQLAlchemy também oferece ferramentas para executar consultas SQL diretamente. Para usar o __SQLAlchemy de forma assíncrona__, você precisa usar sua versão com suporte assíncrono igual ou superior ao SQLAlchemy 1.4.
 
@@ -193,7 +193,7 @@ __CRUD com FastAPI e SQL ALchemy__
 
 **Aula_10**
 
-__CRUD com FastAPI e SQL ALchemy__
+__CRUD com FastAPI, BaseModel e SQL ALchemy__
 
 - Pasta e arquivos:
     - routes:
@@ -213,9 +213,8 @@ __CRUD com FastAPI e SQL ALchemy__
 
 **Aula_11**
 
-- __Resumo da aplicação SQL Alchemy em FastAPI com CRUD__
+- __Resumo CRUD com FastAPI, BaseModel e SQL ALchemy__
 ---
-
 
 **Aula_12**
 
@@ -261,6 +260,17 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 ---
 
 **Any**
+- __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
+---
+
 **SQLAlchemy**
-**SQLite**
-**Documentos**
+- __SQLAlchemy__ é uma biblioteca de __ORM__ (__Object-Relational Mapping__) em Python que permite interagir com bancos de dados usando classes e objetos, abstraindo as consultas SQL complexas.
+---
+
+**SQLITE**
+- Criação de banco de dados __SQLite__ via programação Python com pré-registos. 
+---
+
+**DOCUMENTOS_EM_PDF**
+- Arquivos em PDF sobre REST APIS.
+---

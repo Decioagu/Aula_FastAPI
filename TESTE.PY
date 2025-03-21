@@ -30,7 +30,6 @@ fake_users_db = {
 # =================================== SEGURANÇA =====================================
 # Configuração do hash de senha
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Função para verificar senha
 def verify_password(plain_password, hashed_password):
@@ -41,6 +40,9 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 # ================================= AUTENTICAÇÃO ====================================
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 # Função para autenticar usuário
 def authenticate_user(fake_db, username: str, password: str):
     user = fake_db.get(username)

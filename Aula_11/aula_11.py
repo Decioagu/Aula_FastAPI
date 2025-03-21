@@ -26,7 +26,6 @@ def sqlite():
 # =========== CONFIGURAÇÃO BANCO DE DADOS SQL ALCHEMY ===========
 # Conexão
 engine = create_engine(sqlite()) # <= Retire do comentário para SQLite
-
 # Interação Banco
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
 # Modelagem Banco de Dados
@@ -65,23 +64,20 @@ class HotelSchema(BaseModel):
         from_attributes = True
 
 # ======================================  CRIAR TABELA APOS MODELAGEM  =======================================
-# Função para verificar a existência de uma tabela de forma síncrona
-def tabela_existe(engine, nome_tabela: str) -> bool:
+def tabela_existe(engine) -> bool:
     inspetor = inspect(engine)
-    return inspetor.has_table(nome_tabela)
+    # Obtendo o nome gerado automaticamente pelo SQLModel (baseado no nome da classe)
+    nome_tabela = HotelModel.__tablename__ if hasattr(HotelModel, "__tablename__") else HotelModel.__name__.lower()
 
-# Criar a tabela após modelagem da classe HotelModel (CASO NÃO EXISTA)
-def criar_tabelas(engine):
-    Base.metadata.create_all(bind=engine)
-    # db.close() # Desnecessário devido função "def get_db():"
+    if not inspetor.has_table(nome_tabela):
+        print(f'A tabela "{nome_tabela}" NÃO existe.')
+        print(f"🔹 Criando a tabela '{nome_tabela}'...")
+        Base.metadata.create_all(engine)
+    else:
+        print(f"✅ A tabela '{nome_tabela}' já existe.")
 
 # Verifica a existência de tabela
-if tabela_existe(engine, "hoteis"):
-    print('A tabela "hoteis" EXISTE.')
-else:
-    print('A tabela "hoteis" NÃO existe.')
-    print("Criando...")
-    criar_tabelas(engine)  # cria tabela (CASO NÃO EXISTA)
+tabela_existe(engine)
 
 # =================== INSTANCIAR FASTAIP ========================
 # Instância do FastAPI
