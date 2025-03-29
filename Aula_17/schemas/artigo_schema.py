@@ -17,10 +17,8 @@ class ArtigoSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class ArtigoSemIdSchema(BaseModel):
-    titulo: str
-    descricao: str
-    url_fonte: HttpUrl
-    usuario_id: Optional[int]
-    class Config:
-        from_attributes = True
+# class ArtigoSchemaSemId(ArtigoSchema):
+#     titulo: str
+#     descricao: str
+#     url_fonte: HttpUrl
+#     usuario_id: Optional[int]

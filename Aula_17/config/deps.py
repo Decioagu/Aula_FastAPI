@@ -1,20 +1,23 @@
 from typing import Optional
 from fastapi import Depends, HTTPException, status
 from jose import jwt, JWTError
-
 from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession #  Interação Bancos de Dados assíncrona
 from pydantic import BaseModel # Modelagem
 
 # Meus módulos
-from config.conf_db import Session, settings, get_session
-from config.auth import oauth2_schema
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..")))
+from config.conf_db import settings, get_session
+from Aula_16.config.auth import oauth2_schema
 from models.usuario_model import UsuarioModel
 
 class TokenData(BaseModel):
     username: Optional[int] = None
 
 # Dependência para obter usuário atual
-async def get_current_user(db: Session = Depends(get_session), token: str = Depends(oauth2_schema)) -> UsuarioModel: # type: ignore
+async def get_current_user(db: AsyncSession = Depends(get_session), token: str = Depends(oauth2_schema)) -> UsuarioModel: # type: ignore
    
     # Exceção ...
     credential_exception: HTTPException = HTTPException(

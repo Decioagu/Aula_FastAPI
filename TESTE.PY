@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from sqlalchemy import Column, String, Float, create_engine, inspect
+from sqlalchemy import Column, String, Float, Integer, Boolean,create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from pathlib import Path
@@ -11,23 +11,12 @@ from typing import Optional
 from passlib.context import CryptContext
 from pytz import timezone 
 
-# Configuração do JWT
-SECRET_KEY = "seu_segredo_super_secreto"
+# ======================= CONFIGURAÇÃO SEGURANÇA JWT ==============================
+SECRET_KEY = "tMhSB1OGVAQei3NP5Dho6H63_IhTbyPkFlsCwC6L-bE"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# Modelo de usuário
-fake_users_db = {
-    "usuario1": {
-        "username": "usuario1",
-        "full_name": "Usuário Um",
-        "email": "usuario1@email.com",
-        "hashed_password": pwd_context.hash("senha123"),
-        "disabled": False,
-    }
-}
-
-# =================================== SEGURANÇA =====================================
+# =============================== SEGURANÇA =======================================
 # Configuração do hash de senha
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -59,7 +48,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     expire = datetime.now(tz=sp) + (expires_delta or timedelta(minutes=15))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-# =================================================================================
+# ============================ DEPENDÊNCIA ========================================
 
 # Dependência para obter usuário atual
 def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -74,23 +63,29 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     if user is None:
         raise HTTPException(status_code=401, detail="Usuário não encontrado")
     return user
+# ========================== CAMINHO ARQUIVO SQLite ===========================
 
 # Conexão SQLite
 def sqlite():
     caminho_do_arquivo = Path(__file__).parent
     return f"sqlite:///{caminho_do_arquivo}/meu_hotel.db"
 
+# ======================= CONEXÃO BANCO DE DADOS ===============================
 engine = create_engine(sqlite())
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
-Base = declarative_base()
 
-# Dependência para obter sessão do banco
+# ========================= SESSÃO BANCO DE DADOS ==============================
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
+
+# ================= SESSÃO COMMIT (ABERTURA E FECHAMENTO) ======================
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+# ==================== MODELAGEM DO BANCO DE DADOS =============================
+Base = declarative_base()
 
 # Modelo do Banco de Dados
 class HotelModel(Base):
@@ -112,12 +107,52 @@ class HotelSchema(BaseModel):
     class Config:
         from_attributes = True
 
-# Criar tabelas se não existirem
-Base.metadata.create_all(bind=engine)
+class UsuarioModel(Base):
+    # ESCOPO BANCO DE DADOS
+    __tablename__ = 'usuarios'
+    usuario_id = Column(Integer, primary_key = True, autoincrement=True) # id auto incrementado
+    login = Column(String(40), nullable=False, unique=True)
+    senha = Column(String(40), nullable=False)
+    email = Column(String(80), nullable=False, unique=True)
+    ativado =  Column(Boolean, default=False)
+    '''banco.Model é equivalente a declarative_base() do SQLAlchemy'''
 
+# Modelagem da API
+class UsuarioSchema(BaseModel):
+    usuario_id: int
+    login: str
+    email: str    
+    class Config:
+        from_attributes = True
+
+class UsuarioSegredoSchema(UsuarioSchema):
+    usuario_id: int
+    login: str
+    senha: str 
+    email: str
+    ativado: bool  
+
+# ===============  CRIAR TABELA APOS MODELAGEM  =======================
+def tabela_existe(engine) -> bool:
+    inspetor = inspect(engine)
+    # Obtendo o nome gerado automaticamente pelo SQLModel (baseado no nome da classe)
+    nome_tabela = HotelModel.__tablename__ if hasattr(HotelModel, "__tablename__") else HotelModel.__name__.lower()
+
+    if not inspetor.has_table(nome_tabela):
+        print(f'A tabela "{nome_tabela}" NÃO existe.')
+        print(f"🔹 Criando a tabela '{nome_tabela}'...")
+        Base.metadata.create_all(engine)
+    else:
+        print(f"✅ A tabela '{nome_tabela}' já existe.")
+
+# Verifica a existência de tabela
+tabela_existe(engine)
+
+# =================== INSTANCIAR FASTAIP ========================
 # Instância do FastAPI
 app = FastAPI()
 
+# ========================== CRUD ===============================
 # Rota de login
 @app.post("/token")
 def login(form_data: OAuth2PasswordRequestForm = Depends()):

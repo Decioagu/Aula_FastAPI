@@ -1,22 +1,25 @@
-from pytz import timezone # manipular fusos horários em Python
 
-from typing import Optional
-from datetime import datetime, timedelta
 
-from fastapi.security import OAuth2PasswordBearer # Autorização em APIs
+# Meu módulo ...
+from security import verificar_senha
 
-from sqlalchemy.future import select # Consultas assíncronas
-from sqlalchemy.ext.asyncio import AsyncSession #  Interação Bancos de Dados assíncrona
-
-from jose import jwt # Autorização (JSON Web Token)
-
-from pydantic import EmailStr # Permitindo a validação automática de endereços de e-mail validos
-
-# Meus módulos
+import sys
+import os
+# Adicionar o caminho do diretório pai ao sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Meus módulos ...
 from models.usuario_model import UsuarioModel
 from config.conf_db import settings
-from config.security import verificar_senha
 
+# ======================= AUTENTICAÇÃO ============================
+from pytz import timezone # manipular fusos horários em Python
+from typing import Optional
+from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordBearer # Autorização em APIs
+from sqlalchemy.future import select # Consultas assíncronas
+from sqlalchemy.ext.asyncio import AsyncSession #  Interação Bancos de Dados assíncrona
+from jose import jwt # Autorização (JSON Web Token)
+from pydantic import EmailStr # Permitindo a validação automática de endereços de e-mail validos
 
 # Endpoint para autenticação token
 oauth2_schema = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/usuarios/login")

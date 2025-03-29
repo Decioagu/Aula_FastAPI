@@ -4,7 +4,7 @@ import os
 
 # Caminho
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from routes.rotas import rota
+from routes.rotas import router
 
 # instanciar API
 app = FastAPI(
@@ -14,7 +14,7 @@ app = FastAPI(
              )
 
 # Agrupamento de rotas 
-app.include_router(rotas)
+app.include_router(router)
 
 if __name__ == 'main':
     

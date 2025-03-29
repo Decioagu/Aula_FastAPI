@@ -10,39 +10,24 @@ from sqlalchemy.exc import IntegrityError
 
 from models.usuario_model import UsuarioModel
 from schemas.usuario_schema import UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaUp, UsuarioSchemaArtigos
-from core.deps import get_session, get_current_user
-from core.security import gerar_hash_senha
-from core.auth import autenticar, criar_token_acesso
+from config.deps import get_session, get_current_user
+from config.security import gerar_hash_senha
+from config.auth import autenticar, criar_token_acesso
 
 
 router = APIRouter()
 
 
-# GET Logado
+# GET Logado / http://127.0.0.1:8000/routes/v1/usuarios/logado
 @router.get('/logado', response_model=UsuarioSchemaBase)
 def get_logado(usuario_logado: UsuarioModel = Depends(get_current_user)):
+    
     return usuario_logado
 
-
-# POST / Signup
-@router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=UsuarioSchemaBase)
-async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSession = Depends(get_session)):
-    novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, sobrenome=usuario.sobrenome,
-                                              email=usuario.email, senha=gerar_hash_senha(usuario.senha), eh_admin=usuario.eh_admin)
-    async with db as session:
-        try:
-            session.add(novo_usuario)
-            await session.commit()
-
-            return novo_usuario
-        except IntegrityError:
-            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-                                detail='Já existe um usuário com este email cadastrado.')
-
-
-# GET Usuarios
+# GET / http://127.0.0.1:8000/routes/v1/usuarios/
 @router.get('/', response_model=List[UsuarioSchemaBase])
 async def get_usuarios(db: AsyncSession = Depends(get_session)):
+    
     async with db as session:
         query = select(UsuarioModel)
         result = await session.execute(query)
@@ -51,9 +36,10 @@ async def get_usuarios(db: AsyncSession = Depends(get_session)):
         return usuarios
 
 
-# GET Usuario
+# GET / http://127.0.0.1:8000/routes/v1/usuarios/id
 @router.get('/{usuario_id}', response_model=UsuarioSchemaArtigos, status_code=status.HTTP_200_OK)
 async def get_usuario(usuario_id: int, db: AsyncSession = Depends(get_session)):
+   
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
@@ -65,10 +51,40 @@ async def get_usuario(usuario_id: int, db: AsyncSession = Depends(get_session)):
             raise HTTPException(detail='Usuário não encontrado.',
                                 status_code=status.HTTP_404_NOT_FOUND)
 
+# POST signup / http://127.0.0.1:8000/routes/v1/usuarios/signup
+@router.post('/cadastro', status_code=status.HTTP_201_CREATED, response_model=UsuarioSchemaBase)
+async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSession = Depends(get_session)):
 
-# PUT Usuario
+    # Adicionar no Banco de Dados
+    novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, sobrenome=usuario.sobrenome,
+                                              email=usuario.email, senha=gerar_hash_senha(usuario.senha), eh_admin=usuario.eh_admin)
+    async with db as session:
+        try:
+            session.add(novo_usuario)
+            await session.commit()
+            return novo_usuario
+        
+        except IntegrityError:
+            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                detail='Já existe um usuário com este email cadastrado.')
+
+# POST login / http://127.0.0.1:8000/routes/v1/usuarios/login
+@router.post('/login')
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_session)):
+    
+    usuario = await autenticar(email=form_data.username, senha=form_data.password, db=db)
+
+    if not usuario:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail='Dados de acesso incorretos.')
+
+    return JSONResponse(content={"access_token": criar_token_acesso(sub=usuario.id), "token_type": "bearer"}, status_code=status.HTTP_200_OK)
+
+
+# PUT / http://127.0.0.1:8000/routes/v1/usuarios/id
 @router.put('/{usuario_id}', response_model=UsuarioSchemaBase, status_code=status.HTTP_202_ACCEPTED)
 async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUp, db: AsyncSession = Depends(get_session)):
+    
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
@@ -94,9 +110,10 @@ async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUp, db: AsyncSessio
                                 status_code=status.HTTP_404_NOT_FOUND)
 
 
-# DELETE usuario
+# DELETE / http://127.0.0.1:8000/routes/v1/usuarios/id
 @router.delete('/{usuario_id}', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_usuario(usuario_id: int, db: AsyncSession = Depends(get_session)):
+    
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
@@ -112,13 +129,3 @@ async def delete_usuario(usuario_id: int, db: AsyncSession = Depends(get_session
                                 status_code=status.HTTP_404_NOT_FOUND)
 
 
-# POST Login
-@router.post('/login')
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_session)):
-    usuario = await autenticar(email=form_data.username, senha=form_data.password, db=db)
-
-    if not usuario:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail='Dados de acesso incorretos.')
-
-    return JSONResponse(content={"access_token": criar_token_acesso(sub=usuario.id), "token_type": "bearer"}, status_code=status.HTTP_200_OK)
