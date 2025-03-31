@@ -257,7 +257,53 @@ __CRUD com FastAPI e SQL Model__
 
 __Autenticação JWT com FastAPI e SQL ALchemy__
 
+- A autenticação __JWT__ (JSON Web Token) em FastAPI é um método de autenticação baseado em tokens que permite que usuários se autentiquem de forma segura e sem a necessidade de armazenar sessões no servidor.
+
+- Pasta e arquivos:
+    - config:
+        - __.\config\conf_db.py__: gerenciamento do tipo de Banco de Dados e configuração de segurança __JWT__
+    - models:
+        - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
+        - __.\models\artigos_model.py__: (modelos) => modelagem da dados (API e Banco de Dados)
+        - __.\models\usuario_model.py__: (modelos) => modelagem da dados (API e Banco de Dados)
+    - schemas:
+        - __.\schemas\artigo_schemas.py__: (modelos) => modelagem da dados (API)
+        - __.\schemas\usuario_schemas.py__: (modelos) => modelagem da dados (API)
+    - __criar_tabela.py__: Ação de criar tabela do Banco de Dados
 ---
+
+**Aula_16**
+
+__Autenticação JWT com FastAPI e SQL ALchemy__
+
+- Pasta e arquivos:
+    - config:
+        - __.\config\security.py__: Define o esquema de autenticação (Token JWT das requisições)
+        - __.\config\auth.py__: Criar autenticação do usuário (Tokens JWT)
+        - __.\config\deps.py__: Verifica autenticação do usuário (Tokens JWT)
+    - routes:
+        - __.\routes\api.py__: gerenciamento de Rotas (CRUD)
+        - __.\routes\v1\artigo.py__: (recursos) => CRUD usuário (Autenticação JWT)
+        - __.\routes\v1\usuario.py__: (recursos) => CRUD usuário (Autenticação JWT)
+    - __main.py__: adição de roteador à aplicação principal (Rotas).
+
+- __security.py__:
+    - O __CryptContext__ permite gerenciar diferentes algoritmos de hashing de senhas e facilita a verificação e atualização dos hashes ao longo do tempo.
+
+- __auth.py__:
+    - __OAuth2PasswordBearer__ é um esquema de segurança que espera que o cliente envie um token JWT no cabeçalho da requisição para acessar rotas protegidas. Ele define a forma como a API receberá o token, mas não realiza a autenticação por si só – você ainda precisa implementar a validação do token.
+    - __EmailStr__ é um tipo de dado especializado do Pydantic que valida automaticamente se o valor fornecido é um e-mail válido.
+    
+- __deps.py__:
+    -  __JOSE__ (JavaScript Object Signing and Encryption), que é uma biblioteca Python usada para trabalhar com tokens JWT (JSON Web Tokens), responsável por gerar e decodificar tokens JWT.
+    - __JWTError__: Exceção que é levantada quando ocorre algum erro ao lidar com JWTs.
+
+- __artigo.py__ e __usuario.py__:
+    - __from config.deps import get_session, get_current_user__
+        - __get_session__: Sessão ao Banco de Dados
+        - __get_current_user__: Autenticar um usuário para acesso ao banco de dados (Token JWT)
+---
+
 
 **Any**
 - __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
@@ -269,6 +315,14 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 **SQLITE**
 - Criação de banco de dados __SQLite__ via programação Python com pré-registos. 
+---
+
+**Token_JWT**
+- Cria um token seguro e aleatório para "JWT_SECRET" em uma eventual autenticação "JWT".
+---
+
+**JWT**
+- JWT (JSON Web Tokens) é uma biblioteca popular para trabalhar com JSON Web Tokens (JWT) em Python, usado para transmitir informações entre duas partes de forma compacta, segura e de maneira que pode ser verificada.
 ---
 
 **DOCUMENTOS_EM_PDF**

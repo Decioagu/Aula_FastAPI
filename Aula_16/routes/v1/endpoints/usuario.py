@@ -83,10 +83,11 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
 
 # PUT / http://127.0.0.1:8000/routes/v1/usuarios/id
 @router.put('/{usuario_id}', response_model=UsuarioSchemaBase, status_code=status.HTTP_202_ACCEPTED)
-async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUp, db: AsyncSession = Depends(get_session)):
+async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUp, db: AsyncSession = Depends(get_session), usuario_logado: UsuarioModel = Depends(get_current_user)):
     
     async with db as session:
-        query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
+        query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id).filter(
+            usuario_id == usuario_logado.id)
         result = await session.execute(query)
         usuario_up: UsuarioSchemaBase = result.scalars().unique().one_or_none()
 
@@ -112,10 +113,11 @@ async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUp, db: AsyncSessio
 
 # DELETE / http://127.0.0.1:8000/routes/v1/usuarios/id
 @router.delete('/{usuario_id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_usuario(usuario_id: int, db: AsyncSession = Depends(get_session)):
+async def delete_usuario(usuario_id: int, db: AsyncSession = Depends(get_session), usuario_logado: UsuarioModel = Depends(get_current_user)):
     
     async with db as session:
-        query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
+        query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id).filter(
+            usuario_id == usuario_logado.id)
         result = await session.execute(query)
         usuario_del: UsuarioSchemaArtigos = result.scalars().unique().one_or_none()
 

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from sqlalchemy import Column, String, Float, Integer, Boolean,create_engine, inspect
+from sqlalchemy import Column, String, Float, Integer, Boolean, create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from pathlib import Path
@@ -9,15 +9,14 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from typing import Optional
 from passlib.context import CryptContext
-from pytz import timezone 
+from pytz import timezone
 
-# ======================= CONFIGURAÇÃO SEGURANÇA JWT ==============================
+# ======================= CONFIGURAÇÃO SEGURANÇA JWT (CONFIG) ==============================
 SECRET_KEY = "tMhSB1OGVAQei3NP5Dho6H63_IhTbyPkFlsCwC6L-bE"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# =============================== SEGURANÇA =======================================
-# Configuração do hash de senha
+# ======================= MODELO DE AUTENTICAÇÃO (SECURITY) ================================
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Função para verificar senha
@@ -28,30 +27,8 @@ def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-# ================================= AUTENTICAÇÃO ====================================
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# Função para autenticar usuário
-def authenticate_user(fake_db, username: str, password: str):
-    user = fake_db.get(username)
-    if not user:
-        return False
-    if not verify_password(password, user["hashed_password"]):
-        return False
-    return user
-
-# Gerar Token de acesso 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    to_encode = data.copy()
-    sp = timezone('America/Sao_Paulo')
-    expire = datetime.now(tz=sp) + (expires_delta or timedelta(minutes=15))
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-# ============================ DEPENDÊNCIA ========================================
-
-# Dependência para obter usuário atual
-def get_current_user(token: str = Depends(oauth2_scheme)):
+# ========================== VERIFICAR (DEPENDÊNCIA) =====================================
+def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -59,24 +36,24 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             raise HTTPException(status_code=401, detail="Token inválido")
     except JWTError:
         raise HTTPException(status_code=401, detail="Token inválido")
-    user = fake_users_db.get(username)
+    
+    user = db.query(UsuarioModel).filter(UsuarioModel.login == username).first()  # Alterado para usar o banco de dados real
     if user is None:
         raise HTTPException(status_code=401, detail="Usuário não encontrado")
     return user
-# ========================== CAMINHO ARQUIVO SQLite ===========================
 
-# Conexão SQLite
+# ========================== CAMINHO ARQUIVO SQLite ===========================
 def sqlite():
     caminho_do_arquivo = Path(__file__).parent
     return f"sqlite:///{caminho_do_arquivo}/meu_hotel.db"
 
-# ======================= CONEXÃO BANCO DE DADOS ===============================
+# ======================= CONEXÃO BANCO DE DADOS ============================
 engine = create_engine(sqlite())
 
-# ========================= SESSÃO BANCO DE DADOS ==============================
+# ========================= SESSÃO BANCO DE DADOS ============================
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, expire_on_commit=False, bind=engine)
 
-# ================= SESSÃO COMMIT (ABERTURA E FECHAMENTO) ======================
+# Função get_db para retornar a sessão de banco de dados
 def get_db():
     db = SessionLocal()
     try:
@@ -84,10 +61,9 @@ def get_db():
     finally:
         db.close()
 
-# ==================== MODELAGEM DO BANCO DE DADOS =============================
+# ==================== MODELAGEM DO BANCO DE DADOS ==========================
 Base = declarative_base()
 
-# Modelo do Banco de Dados
 class HotelModel(Base):
     __tablename__ = "hoteis"
     hotel_id = Column(String(50), primary_key=True)
@@ -96,7 +72,6 @@ class HotelModel(Base):
     diaria = Column(Float, nullable=True)
     cidade = Column(String(40), nullable=False)
 
-# Modelagem da API
 class HotelSchema(BaseModel):
     hotel_id: str
     nome: str
@@ -108,16 +83,13 @@ class HotelSchema(BaseModel):
         from_attributes = True
 
 class UsuarioModel(Base):
-    # ESCOPO BANCO DE DADOS
     __tablename__ = 'usuarios'
-    usuario_id = Column(Integer, primary_key = True, autoincrement=True) # id auto incrementado
+    usuario_id = Column(Integer, primary_key=True, autoincrement=True)
     login = Column(String(40), nullable=False, unique=True)
     senha = Column(String(40), nullable=False)
     email = Column(String(80), nullable=False, unique=True)
     ativado =  Column(Boolean, default=False)
-    '''banco.Model é equivalente a declarative_base() do SQLAlchemy'''
 
-# Modelagem da API
 class UsuarioSchema(BaseModel):
     usuario_id: int
     login: str
@@ -126,16 +98,12 @@ class UsuarioSchema(BaseModel):
         from_attributes = True
 
 class UsuarioSegredoSchema(UsuarioSchema):
-    usuario_id: int
-    login: str
-    senha: str 
-    email: str
+    senha: str
     ativado: bool  
 
-# ===============  CRIAR TABELA APOS MODELAGEM  =======================
+# ================= CRIAR TABELA APOS MODELAGEM ========================
 def tabela_existe(engine) -> bool:
     inspetor = inspect(engine)
-    # Obtendo o nome gerado automaticamente pelo SQLModel (baseado no nome da classe)
     nome_tabela = HotelModel.__tablename__ if hasattr(HotelModel, "__tablename__") else HotelModel.__name__.lower()
 
     if not inspetor.has_table(nome_tabela):
@@ -145,24 +113,60 @@ def tabela_existe(engine) -> bool:
     else:
         print(f"✅ A tabela '{nome_tabela}' já existe.")
 
-# Verifica a existência de tabela
 tabela_existe(engine)
 
-# =================== INSTANCIAR FASTAIP ========================
-# Instância do FastAPI
+# =================== INSTANCIAR FASTAPI ========================
 app = FastAPI()
 
-# ========================== CRUD ===============================
-# Rota de login
-@app.post("/token")
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(status_code=400, detail="Usuário ou senha incorretos")
-    access_token = create_access_token(data={"sub": user["username"]}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
-    return {"access_token": access_token, "token_type": "bearer"}
+# ========================== CRUD USUÁRIOS ===============================
 
-# Endpoints protegidos
+# 1. Registrar Usuário (Cadastro)
+@app.post("/register", response_model=UsuarioSchema)
+def register_user(usuario: UsuarioSegredoSchema, db: Session = Depends(get_db)):
+    if db.query(UsuarioModel).filter(UsuarioModel.login == usuario.login).first():
+        raise HTTPException(status_code=400, detail="Usuário já cadastrado.")
+    if db.query(UsuarioModel).filter(UsuarioModel.email == usuario.email).first():
+        raise HTTPException(status_code=400, detail="Email já cadastrado.")
+    
+    hashed_password = get_password_hash(usuario.senha)
+    new_user = UsuarioModel(login=usuario.login, senha=hashed_password, email=usuario.email, ativado=usuario.ativado)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+# 2. Listar Usuários
+@app.get("/usuarios", response_model=list[UsuarioSchema], dependencies=[Depends(get_current_user)])
+def list_users(db: Session = Depends(get_db)):
+    return db.query(UsuarioModel).all()
+
+# 3. Editar Usuário
+@app.put("/usuario/{usuario_id}", response_model=UsuarioSchema, dependencies=[Depends(get_current_user)])
+def update_user(usuario_id: int, usuario: UsuarioSegredoSchema, db: Session = Depends(get_db)):
+    user = db.query(UsuarioModel).filter(UsuarioModel.usuario_id == usuario_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    
+    user.login = usuario.login
+    user.email = usuario.email
+    user.senha = get_password_hash(usuario.senha)  # Atualizando senha com hash
+    user.ativado = usuario.ativado
+    db.commit()
+    db.refresh(user)
+    return user
+
+# 4. Excluir Usuário
+@app.delete("/usuario/{usuario_id}", dependencies=[Depends(get_current_user)])
+def delete_user(usuario_id: int, db: Session = Depends(get_db)):
+    user = db.query(UsuarioModel).filter(UsuarioModel.usuario_id == usuario_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    db.delete(user)
+    db.commit()
+    return {"message": "Usuário excluído com sucesso"}
+
+# ========================== CRUD HOTEIS ===============================
+
 @app.get("/hoteis", dependencies=[Depends(get_current_user)])
 def get_hoteis(db: Session = Depends(get_db)):
     return db.query(HotelModel).all()
@@ -171,7 +175,7 @@ def get_hoteis(db: Session = Depends(get_db)):
 def post_hotel(hotel_id: str, dados: HotelSchema, db: Session = Depends(get_db)):
     if db.query(HotelModel).filter(HotelModel.hotel_id == hotel_id).first():
         raise HTTPException(status_code=400, detail="Hotel já existe.")
-    novo_hotel = HotelModel(**dados.model_dump())
+    novo_hotel = HotelModel(**dados.dict())  # Utilizando dados.dict() para converter o Pydantic model
     db.add(novo_hotel)
     db.commit()
     return novo_hotel
@@ -196,3 +200,13 @@ def delete_hotel(hotel_id: str, db: Session = Depends(get_db)):
         db.commit()
         return {"mensagem": "Hotel deletado com sucesso"}
     raise HTTPException(status_code=404, detail="Hotel não encontrado")
+
+
+
+if __name__ == 'main':
+    
+    from uvicorn import run 
+
+    run('main:app', host="127.0.0.1", port=8000, reload=True)
+
+# uvicorn TESTE:app --reload

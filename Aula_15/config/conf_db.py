@@ -42,14 +42,15 @@ async def get_session() -> Generator: # type: ignore
     finally:
         await session.close() # Fechar sessão
 
+
 # ========================= ROTAS API (RECURSOS) ===============================
 from pydantic_settings import BaseSettings
 
 #  Gerenciar configurações de aplicativos
 class Settings(BaseSettings):
-    API_V1_STR: str = '/routes/v1' # anotação rota
+    
+    JWT_SECRET: str = "qS96E1oCfq5gEZH-ngD91NC2qkcl0cffhNTIDGpF4pw" # senha gerada em Token_JWT.py   
 
-    JWT_SECRET: str = "qS96E1oCfq5gEZH-ngD91NC2qkcl0cffhNTIDGpF4pw" # senha gerada em Token_JWT.py
     '''
     HS256 (HMAC + SHA-256): define o algoritmo de criptografia utilizado 
     para assinar e verificar os tokens JWT (JSON Web Token).
@@ -61,6 +62,8 @@ class Settings(BaseSettings):
     ALGORITHM: str = 'HS256'
     # 60 minutos * 24 horas * 7 dias => 1 semana
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # Tempo de acesso ao token
+
+    API_V1_STR: str = '/routes/v1' # anotação rota
 
     # Define que as variáveis de ambiente no Pydantic devem ser sensíveis a maiúsculas e minúsculas.
     class Config:

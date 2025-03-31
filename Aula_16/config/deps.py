@@ -32,7 +32,7 @@ async def get_current_user(db: Session = Depends(get_session), token: str = Depe
             options={"verify_aud": False} # Parâmetro extra não obrigatório
         )
 
-        # Buscar Token decodificada 
+        # Buscar Token decodificada (no campo "sub" do token)
         username: str = payload.get("sub")
 
         # Se Token não existir
