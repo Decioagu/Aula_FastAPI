@@ -10,10 +10,11 @@ from config.conf_db import Session, settings, get_session
 from config.auth import oauth2_schema
 from models.usuario_model import UsuarioModel
 
+# class auxiliar para identificação do id do usuário (UsuarioModel.id)
 class TokenData(BaseModel):
     username: Optional[int] = None
 
-# Dependência para obter usuário atual
+# Dependência (VERIFICAR SENHA E USUÁRIO)
 async def get_current_user(db: Session = Depends(get_session), token: str = Depends(oauth2_schema)) -> UsuarioModel: # type: ignore
    
     # Exceção ...
@@ -26,9 +27,9 @@ async def get_current_user(db: Session = Depends(get_session), token: str = Depe
     try:
         # Decodificar autenticação JWT
         payload = jwt.decode(
-            token,
-            settings.JWT_SECRET, # conf_db.py(JWT_SECRET)
-            algorithms=[settings.ALGORITHM], # algorithm=conf_db.py(ALGORITHM)
+            token, # Senha do Banco de Dados
+            settings.JWT_SECRET, # conf_db.py(JWT_SECRET) | Chave
+            algorithms=[settings.ALGORITHM], # Algorithm=conf_db.py(ALGORITHM) | hashing 
             options={"verify_aud": False} # Parâmetro extra não obrigatório
         )
 

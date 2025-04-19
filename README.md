@@ -304,6 +304,13 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
         - __get_current_user__: Autenticar um usuário para acesso ao banco de dados (Token JWT)
 ---
 
+**Aula_17**
+- __Resumo de autenticação JWT com FastAPI e SQL ALchemy__
+---
+
+**Aula_18**
+- __Exemplo de FILTRO e PAGINAÇÃO com Query em FastAPI__
+---
 
 **Any**
 - __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
@@ -322,7 +329,17 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 ---
 
 **JWT**
-- JWT (JSON Web Tokens) é uma biblioteca popular para trabalhar com JSON Web Tokens (JWT) em Python, usado para transmitir informações entre duas partes de forma compacta, segura e de maneira que pode ser verificada.
+- __JWT__ (JSON Web Tokens) é um padrão para autenticação e troca de informações de forma segura entre partes, utilizando um token assinado digitalmente.
+---
+
+**CryptContext**
+- __CryptContext__ é uma classe do Passlib que facilita a configuração e o gerenciamento de algoritmos de hash de senha. Compara a senha fornecida com o hash armazenado e retorna True se forem equivalentes. Não é possível "descriptografar".
+---
+
+**CRIPTO**
+- Uso pratico de __JWT__ e __CryptContext__:
+    - from jose import jwt
+    - from passlib.context import CryptContext
 ---
 
 **DOCUMENTOS_EM_PDF**

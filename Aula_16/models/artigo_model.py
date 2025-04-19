@@ -8,7 +8,7 @@ class ArtigoModel(DBBaseModel):
     __tablename__ = 'artigos'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    titulo = Column(String(256))
+    titulo = Column(String(256), unique=True)
     descricao = Column(String(256))
     url_fonte = Column(String(256))
     usuario_id = Column(Integer, ForeignKey('usuarios.id')) # Chave estrangeira

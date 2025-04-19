@@ -21,7 +21,7 @@ app = FastAPI(
 cursos = [
     Curso(id = 1, titulo= "Programação para Leigos", aulas= 112, horas= 58),
     Curso(id = 2, titulo= "Algoritmos e logica de programação", aulas= 87, horas= 67),
-    Curso(id = 3, titulo= "Programação linguagem Python", aulas= 33, horas= 47)
+    Curso(id = 3, titulo= "Programação linguagem Python", aulas= 33, horas= 47),
 ]
 
 # rota
@@ -47,16 +47,11 @@ async def get_cursos():
          response_description='Modelo de lista 2'
          )
 async def get_curso(curso_id: int):
-
-    # ====================================================== 
-    # filtrar "cursos" por id
-    filtrar_id_curso = filter(lambda meu_id: meu_id.id == curso_id, cursos)
-    curso = dict(*filtrar_id_curso)
-    # ======================================================
-
-    if curso:
+    
+    try:
+        curso = cursos[curso_id] # filtrar "cursos" por id
         return curso
-    else:
+    except KeyError:
         # tratar id inexistente
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado')
 

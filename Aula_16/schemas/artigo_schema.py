@@ -8,7 +8,7 @@ class ArtigoSchema(BaseModel):
     titulo: str
     descricao: str
     url_fonte: HttpUrl
-    usuario_id: Optional[int]
+    usuario_id: Optional[int] = None
 
     '''
     O atributo orm_mode = True permite que o Pydantic converta objetos do 
@@ -19,8 +19,8 @@ class ArtigoSchema(BaseModel):
 
 class ArtigoSemIdSchema(BaseModel):
     titulo: str
-    descricao: str
-    url_fonte: HttpUrl
-    usuario_id: Optional[int]
+    descricao: Optional[str] = None
+    url_fonte: Optional[HttpUrl] = None
+    usuario_id: Optional[int] = None
     class Config:
         from_attributes = True

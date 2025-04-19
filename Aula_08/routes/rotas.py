@@ -5,11 +5,6 @@ from models.database import cursos, Curso
 
 router = APIRouter()
 
-# rota
-@router.get('/')
-async def get_site():
-    return 'http://127.0.0.1:8000/docs'
-
 # rota (Ler todos os dados)
 @router.get('/cursos', 
          summary='BUSCAR listagem dos cursos ',
@@ -32,6 +27,7 @@ async def get_curso(curso_id: int):
     # ====================================================== 
     # filtrar "cursos" por id
     filtrar_id_curso = filter(lambda meu_id: meu_id.id == curso_id, cursos)
+    # desempacotar e transformar em Dicionario
     curso = dict(*filtrar_id_curso)
     # ======================================================
 

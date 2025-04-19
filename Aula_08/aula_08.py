@@ -13,8 +13,13 @@ app = FastAPI(
              description= 'Alua 31'
              )
 
+# rota
+@app.get('/')
+async def get_site():
+    return 'http://127.0.0.1:8000/docs'
+
 # Agrupamento de rotas 
-app.include_router(router)
+app.include_router(router, tags=['cursos'])
 
 if __name__ == 'main':
     
