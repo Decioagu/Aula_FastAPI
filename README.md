@@ -312,6 +312,192 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 - __Exemplo de FILTRO e PAGINAÇÃO com Query em FastAPI__
 ---
 
+**Aula_19**
+- __Introdução Websites com FastAPI__
+---
+
+**Aula_20**
+- __Introdução Websites com FastAPI__
+
+- __Templates HTML__
+
+    - __Requests__ é uma biblioteca Python que fornece uma interface simples e elegante para __fazer solicitações HTTP__. Ela é muito popular entre desenvolvedores web e de APIs, pois permite enviar e receber dados de servidores HTTP de forma rápida e fácil.
+
+    - __Jinja2Templates__ é uma biblioteca Python que cria uma instância configurada do __Jinja2__, que é um motor de template (template engine) usado em aplicações web Python, como Flask, FastAPI e Django. Ele permite misturar Python com HTML, criando páginas dinâmicas, apontando para a pasta onde estão os arquivos de template (HTML).
+
+- Pasta e arquivos:
+    - templates:
+        - __.\templates\index.html__: templates
+        - __.\templates\servico.html__: templates
+    - __main.py__: Declaração de rotas para templetes 
+
+---
+
+**Aula_21**
+- __Introdução Websites com FastAPI__
+
+- __Layout HTML compartilhados__ 
+    
+    - __Compartilhamento de LAYOUT HTML__ refere-se à prática de reutilizar a estrutura fundamental (__layout base__) de um documento HTML em diferentes páginas de um website ou até mesmo em projetos distintos.
+
+    - Usando Linguagens de Template com __Jinja2__ - Python:
+        - templates:
+            - __.\templates\base.html__: layout base para templetes
+            - __.\templates\index.html__: herdeiro do layout base (templetes)
+            - __.\templates\servico.html__: herdeiro do layout base (templetes)
+
+    - Segue exemplo com __Jinja2__:
+        - {% extends 'base.html' %}: indica que esta página usa o layout definido em base.html.
+        - {% block title %} e {% endblock %} definem um bloco que pode ser substituído com o título específico da página.
+        - {% block style %} e {% endblock %}: define um bloco chamado "style" dentro de um arquivo de template.
+        - {% block content %} e {% endblock %}: definem a área onde o conteúdo principal da página será inserido.
+        - {% include 'header.html' %} e {% include 'footer.html' %}: incluem o conteúdo dos arquivos header.html e footer.html no layout base.
+        - {% if imagem %} e {% endif %}: verifica se a variável imagem existe e tem algum valor considerado para execução
+---
+
+**Aula_22**
+- __Introdução Websites com FastAPI__
+
+- __Arquivos Estáticos__
+
+- __StaticFiles__ é uma classe da FastAPI (herdada de Starlette) que permite expor uma pasta contendo arquivos estáticos para que eles possam ser acessados via navegador.
+
+- Pasta e arquivos:
+    - static:
+        - css:
+            - __.\static\css\styles.css__: estilo da pagina
+    - templates:
+        - __.\templates\base.html__: adição de link para estilo layout base
+    - __main.py__: apontar caminho para arquivos estáticos (estilo da pagina) 
+---
+
+**Aula_23**
+- __Introdução Websites com FastAPI__
+
+- __Extração de dados do USUÁRIO em texto via Website__
+
+- Pasta e arquivos:
+    - templates:
+        - __.\templates\servicos.html__: adição de formulário, campo de extração e botão de ação
+    - __main.py__: serviço "post", extração de dados do usuário
+---
+
+**Aula_24**
+- __Introdução Websites com FastAPI__
+
+- __Carregamento e baixar arquivos armazenado no PC__
+
+- __UploadFile__ permite lidar com envio de arquivos (uploads) em requisições HTTP feitas para uma rota FastAPI.
+- __async_open__ serve para abrir arquivos de forma assíncrona em Python usando a biblioteca __aiofile__.
+- __uuid4__ é usado para gerar identificadores únicos __(UUIDs)__ em Python.
+
+- Pasta e arquivos:
+    - templates:
+        - __.\templates\servicos.html__: exibir imagem na pagina se existir
+    - __main.py__: Buscar e carregamento de arquivo na pasta "download"
+---
+
+**Aula_25**
+- __Projeto FastAPI Website__
+
+- __Compartilhamento de LAYOUT HTML__ com __Jinja2__ Python:
+
+- Pasta e arquivos:
+    - static:
+        - css:
+            - __.\static\css\styles.css__: estilo da pagina (layout base, linha 69)
+    - templates:
+        - __.\templates\base.html__: layout base para templetes
+        - home:
+            - __.\templates\home\index.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\header.html__: templates
+            - __.\templates\home\features.html__: templates
+            - __.\templates\home\testimonial.html__: templates
+            - __.\templates\home\blog_preview.html__: templates
+            - __.\templates\home\about\about.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\about\header.html__: templates
+            - __.\templates\home\about\section_one.html__: templates
+            - __.\templates\home\about\section_two.html__: templates
+            - __.\templates\home\about\team_members.html__: templates
+            - __.\templates\home\blog_post.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\blog.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\blog\page_content.html__: templates
+            - __.\templates\home\blog\news.html__: templates
+            - __.\templates\home\blog\preview.html__: templates
+            - __.\templates\home\contact.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\faq.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\portfolio_item.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\portfolio.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\pricing.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\404.html__: herdeiro do layout base (inclusão de templetes)
+            - __.\templates\home\500.html__: herdeiro do layout base (inclusão de templetes)
+    - __main.py__: Declaração de rotas para templetes 
+---
+
+**Aula_26**
+- __Projeto FastAPI Website__
+
+- __Implementação de Banco de Dados SQLalchemy em FastAPI__
+
+-  O Banco de Dados é para alimentar images e dados para carregamento das paginal HTML (templates).
+
+- Pasta e arquivos:
+    - core:
+        - __.\core\configs.py__: gerenciamento do tipo de Banco de Dados
+        - __.\core\database.py__: ação de criar tabela do Banco de Dados
+    - models: pasta vazia
+    - models:
+        - __.\models\_all_models.py__: agrupamento de modelos (TABELAS Banco de Dados)
+        - __.\models\area_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\autor_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\comentario_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\duvida_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\post_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\projeto_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\tag_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+        - __.\models\membro_model.py__: (modelos) => modelagem da dados (Banco de Dados)
+    - views:
+        - __home_view.py__: Declaração de rotas do arquivo __.\templates\base.html__
+    - __main.py__: Simplificação de acesso as rotas para __.\views\home_view.py__
+    - __startup.db__: Banco de Dados SQLite (__.\core\database.py__)
+
+- Pasta __core__:
+    - Configuração do Banco de Dados
+- Pasata __models__:
+    - Estruturas das tabelas e colunas (Ligados diretamente ao Banco de Dados)
+- Pasta __views__:
+    - Declaração endereço de rotas templates (pagina HTML)
+
+---
+
+**Aula_27**
+- __Projeto FastAPI Website__
+
+__CRUD com FastAPI e SQL ALchemy__
+
+- Pasta e arquivos:
+    - controllers:
+        - __.\controllers\area_controller.py__: (recursos) => CRUD
+        - __.\controllers\autor_controller.py__: (recursos) => CRUD
+        - __.\controllers\base_controller.py__: (recursos) => CRUD
+        - __.\controllers\comentario_controller.py__: (recursos) => CRUD
+        - __.\controllers\duvida_controller.py__: (recursos) => CRUD
+        - __.\controllers\membro_controller.py__: (recursos) => CRUD
+        - __.\controllers\post_controller.py__: (recursos) => CRUD
+        - __.\controllers\projeto_controller.py__: (recursos) => CRUD
+        - __.\controllers\tag_controller.py__: (recursos) => CRUD
+
+- Pasta __controllers__:
+    - São estruturas de dados (Não ligados diretamente ao Banco de Dados) de entrada e saída de uma API  em forma de JSON, essenciais para validar, organizar e documentar informações de uma API.
+---
+
+**Aula_28**
+- __Projeto FastAPI Website__
+---
+
+
+- __Introdução Websites__
+
 **Any**
 - __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
 ---

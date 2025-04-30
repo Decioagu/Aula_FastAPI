@@ -1,0 +1,33 @@
+{% extends 'base.html' %} <!-- define uso do layout base.py -->
+
+{% block title %}Serviço{% endblock %} <!-- troca de titulo da pagina local -->
+
+{% block style %} <!-- troca de estilo para pagina local -->
+    <style>
+        body {
+            background: #429c65;
+        }
+    </style>
+{% endblock %} <!-- fim do bloco -->
+
+{% block container %} <!-- conteúdo principal -->
+<center>
+    <h1>Cadastro de Serviços</h1>
+    <form action="/servicos" enctype="multipart/form-data" method="post" autocomplet="off"> <!-- formulário de ação HTML -->
+        <div>
+            <input type="text" name="servico" placeholder="Informe o serviço" required autofocus/> <!-- campo de entrada em texto -->
+        </div>
+        </br>
+            <div>
+                <input name="arquivo" type="file">  <!-- selecionar um arquivo no computador --> 
+            </div>
+        </br>
+        <button type="submit">Cadastrar</button> <!-- botão de ação -->
+    </form>
+    <br><br>
+    {% if arquivo_download %} <!--  se existir arquivo_download -->
+        <!-- OBS: exibe apenas imagem -->
+        <img src="{{ url_for('download', path=arquivo_download) }}"/> <!-- linha 62 de main.py -->
+    {% endif %}
+</center>
+{% endblock %} <!-- fim do bloco -->

@@ -1,0 +1,40 @@
+from fastapi import FastAPI
+
+import sys 
+import os 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__)))) 
+from views import home_view #
+
+app = FastAPI(docs_url=None, redoc_url=None) # elimina pagina de documentação FastAPI
+
+# ================================ ACESSO AS ROTAS ====================================
+app.include_router(home_view.router) 
+
+# ================================ CAMINHO DA URL ====================================
+from fastapi.staticfiles import StaticFiles
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # caminho
+# print(f'main.py >>> {BASE_DIR}')
+
+# Arquivos estáticos da pasta "Aula_26/static"
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
+# Arquivos estáticos da pasta "Aula_26/media"
+app.mount('/media', StaticFiles(directory=os.path.join(BASE_DIR, 'media')), name='media')
+# ===================================================================================
+
+if __name__ == '__main__':
+    import uvicorn
+
+    uvicorn.run(app="main:app", host="0.0.0.0", port=8000, log_level='info', reload=True)
+
+# uvicorn Aula_26.main:app --reload
+
+'''
+Observação, o uso de:
+    from fastapi.staticfiles import StaticFiles
+    import os
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+independe e a execução:
+    Fora da pasta: uvicorn Aula_22.main:app --reload
+    Dentro da pasta: uvicorn main:app --reload
+'''

@@ -44,7 +44,7 @@ async def get_session() -> Generator:
 # ========================= ROTAS API (RECURSOS) ===============================
 from pydantic_settings import BaseSettings
 
-#  Gerenciar configurações de aplicativos
+# Gerenciar configurações de aplicativos
 class Settings(BaseSettings):
     API_V1_STR: str = '/rotes/v1' # anotação rota
     

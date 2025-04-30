@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}FastAPI Web na Geek University{% endblock %}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block style %} <!-- define estilo da pagina -->
+        <style>
+            body {
+                background: #3b0808;
+            }
+        </style>
+        {% endblock %} <!-- fim do bloco -->
+    </head>
+    <body>
+       <h1>FastApi Web</h1>
+       <div>
+            <a href="/">Home</a>
+            <a href="/servicos">Serviços</a>
+       </div>
+       <div class="container">
+            {% block container %} <!-- adição de templetes -->
+            {% endblock %} <!-- fim do bloco -->
+       </div>
+    </body>
+</html>

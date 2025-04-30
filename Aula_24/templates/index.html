@@ -1,0 +1,20 @@
+{% extends 'base.html' %} <!-- define uso do layout base.py -->
+
+{% block title %}Home{% endblock %} <!-- troca de titulo da pagina local -->
+
+{% block style %} <!-- troca de estilo para pagina local -->
+    <style>
+        body {
+            background: #989de4;
+        }
+    </style>
+{% endblock %} <!-- fim do bloco -->
+
+{% block container %}  <!-- conteúdo principal -->
+    <center>
+        <h1>FastAPI Web na <u>Geek University</u></h1>
+        <span>Para mais cursos, visite nosso site clicando <a href="https://www.geekuniversity.com.br" target="_blank">aqui</a>.</span>
+        <div>Usuário: {{ usuario }}</div>
+        <p>Estamos na página Index</p>
+    </center>
+{% endblock %} <!-- fim do bloco -->
