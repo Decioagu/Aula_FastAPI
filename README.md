@@ -198,7 +198,7 @@ __CRUD com FastAPI, BaseModel e SQL ALchemy__
 - Pasta e arquivos:
     - routes:
         - __.\routes\api.py__: gerenciamento de Rotas (CRUD)
-        - __.\routes\v1\curso_CRUD.py.py__: (recursos) => CRUD usuário
+        - __.\routes\v1\curso_CRUD.py__: (recursos) => CRUD usuário
     - config:
         - __.\config\conf_db.py__: gerenciamento de variável de ambiente (Rotas)
     - __main.py__: adição de roteador à aplicação principal (Rotas).
@@ -402,35 +402,42 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 - __Compartilhamento de LAYOUT HTML__ com __Jinja2__ Python:
 
+- Pasta __templates__: Gerenciamento das paginas HTML
+    - Pasta __.\templates\home__: Templates das paginas de domínio publico
+
 - Pasta e arquivos:
     - static:
         - css:
             - __.\static\css\styles.css__: estilo da pagina (layout base, linha 69)
     - templates:
-        - __.\templates\base.html__: layout base para templetes
+        - __.\templates\base.html__: layout base para templetes (agrupamento de rotas paginas HTML)
         - home:
             - __.\templates\home\index.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\header.html__: templates
-            - __.\templates\home\features.html__: templates
-            - __.\templates\home\testimonial.html__: templates
-            - __.\templates\home\blog_preview.html__: templates
+                - __.\templates\home\header.html__: template
+                - __.\templates\home\features.html__: template
+                - __.\templates\home\testimonial.html__: template
+                - __.\templates\home\blog_preview.html__: template
             - __.\templates\home\about\about.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\about\header.html__: templates
-            - __.\templates\home\about\section_one.html__: templates
-            - __.\templates\home\about\section_two.html__: templates
-            - __.\templates\home\about\team_members.html__: templates
-            - __.\templates\home\blog_post.html__: herdeiro do layout base (inclusão de templetes)
+                - __.\templates\home\about\header.html__: template
+                - __.\templates\home\about\section_one.html__: template
+                - __.\templates\home\about\section_two.html__: template
+                - __.\templates\home\about\team_members.html__: template
+            - __.\templates\home\blog_post.html__: herdeiro do layout base 
             - __.\templates\home\blog.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\blog\page_content.html__: templates
-            - __.\templates\home\blog\news.html__: templates
-            - __.\templates\home\blog\preview.html__: templates
+                - __.\templates\home\blog\page_content.html__: template
+                - __.\templates\home\blog\news.html__: template
+                - __.\templates\home\blog\preview.html__: template
             - __.\templates\home\contact.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\faq.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\portfolio_item.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\portfolio.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\pricing.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\404.html__: herdeiro do layout base (inclusão de templetes)
-            - __.\templates\home\500.html__: herdeiro do layout base (inclusão de templetes)
+                - __.\templates\home\contact\cards.html__: template
+            - __.\templates\home\faq.html__: herdeiro do layout base
+                - __.\templates\home\faq\sec_1.html__: template
+                - __.\templates\home\faq\sec_2.html__: template
+            - __.\templates\home\portfolio_item.html__: herdeiro do layout base 
+            - __.\templates\home\portfolio.html__: herdeiro do layout base 
+            - __.\templates\home\pricing.html__: herdeiro do layout base
+                - __.\templates\home\pricing\card_free.html__: template
+                - __.\templates\home\pricing\card_pro.html__: template
+                - __.\templates\home\pricing\card_enterprise.html__: template
     - __main.py__: Declaração de rotas para templetes 
 ---
 
@@ -439,7 +446,12 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 - __Implementação de Banco de Dados SQLalchemy em FastAPI__
 
--  O Banco de Dados é para alimentar images e dados para carregamento das paginal HTML (templates).
+- Pasta __core__:
+    - Configuração do Banco de Dados.
+- Pasta __models__:
+    - Estruturas das tabelas e colunas (Ligados diretamente ao Banco de Dados) por __configs.py__.
+- Pasta __views__:
+    - Gerecimento das rotas arquivo __.\templates\base.html__ para navegação das paginas em __.\templates\home__.
 
 - Pasta e arquivos:
     - core:
@@ -457,17 +469,11 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
         - __.\models\tag_model.py__: (modelos) => modelagem da dados (Banco de Dados)
         - __.\models\membro_model.py__: (modelos) => modelagem da dados (Banco de Dados)
     - views:
-        - __home_view.py__: Declaração de rotas do arquivo __.\templates\base.html__
+        - __home_view.py__: Gerecimento das rotas arquivo __.\templates\base.html__
     - __main.py__: Simplificação de acesso as rotas para __.\views\home_view.py__
     - __startup.db__: Banco de Dados SQLite (__.\core\database.py__)
 
-- Pasta __core__:
-    - Configuração do Banco de Dados
-- Pasata __models__:
-    - Estruturas das tabelas e colunas (Ligados diretamente ao Banco de Dados)
-- Pasta __views__:
-    - Declaração endereço de rotas templates (pagina HTML)
-
+-  OBS: Este Banco de dados é para alimentar images e dados para carregamento das paginal HTML (templates).
 ---
 
 **Aula_27**
@@ -475,11 +481,15 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 __CRUD com FastAPI e SQL ALchemy__
 
+- Pasta __controllers__:
+    - São estruturas de dados (Não ligados diretamente ao Banco de Dados) de entrada e saída de uma API  em forma de JSON, essenciais para validar, organizar e documentar informações de uma API.
+    - Em resumo __controllers__ utilizar __models__ para se comunicar com o Banco de Dados de forma indireta.
+
 - Pasta e arquivos:
     - controllers:
+        - __.\controllers\base_controller.py__: (recursos) => estrutura genérica CRUD (compartilhar recursos)
         - __.\controllers\area_controller.py__: (recursos) => CRUD
         - __.\controllers\autor_controller.py__: (recursos) => CRUD
-        - __.\controllers\base_controller.py__: (recursos) => CRUD
         - __.\controllers\comentario_controller.py__: (recursos) => CRUD
         - __.\controllers\duvida_controller.py__: (recursos) => CRUD
         - __.\controllers\membro_controller.py__: (recursos) => CRUD
@@ -487,19 +497,80 @@ __CRUD com FastAPI e SQL ALchemy__
         - __.\controllers\projeto_controller.py__: (recursos) => CRUD
         - __.\controllers\tag_controller.py__: (recursos) => CRUD
 
-- Pasta __controllers__:
-    - São estruturas de dados (Não ligados diretamente ao Banco de Dados) de entrada e saída de uma API  em forma de JSON, essenciais para validar, organizar e documentar informações de uma API.
+- OBS: __base_controller.py__ é uma estrutura genérica para agrupar CRUD comuns aos demais recursos, em resumo é uma Classe PAI que por meio de HERANÇA permite compartilhar métodos as Classes FILHAS ou Subclasses.
 ---
 
 **Aula_28**
 - __Projeto FastAPI Website__
+
+- Pasta __templates__: Gerenciamento das paginas HTML
+    - Pasta __.\templates\home__: Templetes das paginas de domínio publico
+    - Pasta __.\templates\admin__: Templetes das paginas de serviços administrativo
+- Pasta __views__: - Gerecimento das rotas (arquivo __.\templates\base.html__) para navegação das paginas de domínio publico
+    - Pasta __.\views\admin__: Faz INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__ e gerenciamento das rotas administrativas (__.\templates\admin__) para serviços ao usuário final.
+
+- Pasta e arquivos:
+    - templates:
+        - __.\templates\base.html__: layout base para templetes (agrupamento de rotas para domínio publico pasta __.\templates\home__)
+        - __.\templates\404.html__: templetes (resposta de erro para serviço não encontrado)
+        - __.\templates\500.html__: templetes (resposta de erro para falha inesperada)
+        - admin:
+            - __.\templates\admin\404.html__: templetes (resposta de erro para serviço não encontrado)
+            - __.\templates\admin\500.html__: templetes (resposta de erro para falha inesperada)
+            - __.\templates\admin\_base.html__: layout base para templetes
+            - __.\templates\admin\index.html__: templates (herdeiro do layout base)
+            - __.\templates\admin\menu.html__: template (agrupamento de rotas para serviços administrativo pasta __.\templates\admin__)
+            - menbro:
+                - __.\templates\admin\membro\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\membro\create.html__: templates (criar dados)
+                - __.\templates\admin\membro\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\membro\edit.html__: templates (editar dados)
+            - modals:
+            - __.\templates\admin\modals\delete.html__: templates (excluir registro no Banco de Dados)
+            
+            
+            
+
+    - views:
+        - __home_view.py__: Gerecimento das rotas paginas principais (publicas) 
+        - admin:
+            
+
+
+
+
 ---
 
 
+
+ **Aula_00**
+- __Projeto FastAPI Website__
+
+- Resumo:
+    - 01 => __main.py__: Ativação da API, acesso as rotas HTML e arquivos estáticos.
+    - 02 => __Pasta media__: Armazenamentos de downloads.
+    - 03 => __Pasta templates__: Gerencia paginas HTML de liver acesso (publico) 
+        -   03.1 => __Sub pasta .\templates\admin__: Gerencia paginas HTML de acesso administrativo (restrito)
+    - 04 => __Pasta core__: Configuração do Banco de Dados.
+    - 05 => __Pasta model__: Modelagem do Banco de dados, INTERAÇÃO DIRETA com Banco de Dados (Pasta core).
+    - 06 => __Pasta controllers__: Gerenciamento dos recursos (CRUD) entrada e saída da API, INTERAÇÃO INDIRETA com Banco de Dados (Pasta model).
+    - 07 => __Pasta views__: Gerenciamento de rotas templates HTML (Pasta templates)
+        -   07.1 => __Sub pata .\views\admin__: Faz INTERAÇÃO DIRETA do serviços (CRUD) da (Pasta controllers) e alimentação de dados em paginas HTML de acesso restrito (Sub pasta .\templates\admin)
+---
+
 - __Introdução Websites__
 
-**Any**
+**Any_e_object**
 - __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
+
+- __object__ é a superclasse base de todas as classes — representa qualquer coisa.
+
+Portanto, quando você escreve model: object, está dizendo que model pode ser qualquer instância de qualquer classe — o tipo mais genérico possível.
+
+- __Em resumo__
+    - __object__: mais seguro, mas mais restritivo para autocompletar/verificação de tipo.
+
+    - __Any__: mais flexível, mas perde segurança de tipo (é como desligar o verificador de tipos).
 ---
 
 **SQLAlchemy**

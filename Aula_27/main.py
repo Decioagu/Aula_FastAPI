@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 import sys 
 import os 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__)))) 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__)))) # caminho absoluto do diretório
 from views import home_view #
 
 app = FastAPI(docs_url=None, redoc_url=None) # elimina pagina de documentação FastAPI
@@ -12,12 +12,12 @@ app.include_router(home_view.router)
 
 # ================================ CAMINHO DA URL ====================================
 from fastapi.staticfiles import StaticFiles
-BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # caminho
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # caminho absoluto
 # print(f'main.py >>> {BASE_DIR}')
 
-# Arquivos estáticos da pasta "Aula_26/static"
+# Arquivos estáticos da pasta "Aula_27/static"
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
-# Arquivos estáticos da pasta "Aula_26/media"
+# Arquivos estáticos da pasta "Aula_27/media"
 app.mount('/media', StaticFiles(directory=os.path.join(BASE_DIR, 'media')), name='media')
 # ===================================================================================
 

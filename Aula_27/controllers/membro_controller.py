@@ -1,9 +1,9 @@
 from fastapi.requests import Request
-from fastapi import UploadFile
+from fastapi import UploadFile # upload de arquivos enviados em requisições HTTP
 
-from aiofile import async_open
+from aiofile import async_open # serve para abrir arquivos de forma assíncrona
 
-from uuid import uuid4
+from uuid import uuid4 # gerar identificadores únicos
 
 from core.configs import settings
 from core.configs import get_session
@@ -18,7 +18,7 @@ class MembroController(BaseController):
     
     async def post_crud(self) -> None:
         # Recebe dados do form
-        form = await self.request.form()
+        form = await self.request.form() # objeto do tipo FormData 
         
         nome: str = form.get('nome')
         funcao: str = form.get('funcao')
