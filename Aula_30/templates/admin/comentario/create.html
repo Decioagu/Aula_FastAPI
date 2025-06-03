@@ -14,7 +14,7 @@
             <label for="post" class="form-label">Post</label>
             <select class="form-control" name="post" id="post" required>
                 {% if posts %}
-                    <option selected>Selecione um post...</option>
+                    <option value="" disabled selected>Selecione um post...</option>
                     {% for post in posts %}
                         <option value="{{post.id}}">{{post.titulo}}</option>
                     {% endfor %}

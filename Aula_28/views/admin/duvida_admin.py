@@ -24,7 +24,7 @@ class DuvidaAdmin(BaseCrudView):
         self.router.routes.append(Route(path='/duvida/edit/{duvida_id:int}', endpoint=self.object_edit, methods=["GET", "POST"], name='duvida_edit'))
         self.router.routes.append(Route(path='/duvida/delete/{duvida_id:int}', endpoint=self.object_delete, methods=["DELETE",], name='duvida_delete'))
        
-        super().__init__('duvida')
+        super().__init__('duvida') # nome (classe fila)
     
 
     async def object_list(self, request: Request) -> Response:

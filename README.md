@@ -447,7 +447,7 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 - __Implementação de Banco de Dados SQLalchemy em FastAPI__
 
 - Pasta __core__:
-    - Configuração do Banco de Dados.
+    - Configuração do Banco de Dados e implemento Jinja2 (HTML)
 - Pasta __models__:
     - Estruturas das tabelas e colunas (Ligados diretamente ao Banco de Dados) por __configs.py__.
 - Pasta __views__:
@@ -455,7 +455,7 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 - Pasta e arquivos:
     - core:
-        - __.\core\configs.py__: gerenciamento do tipo de Banco de Dados
+        - __.\core\configs.py__: gerenciamento do tipo de Banco de Dados e implemento Jinja2 (HTML)
         - __.\core\database.py__: ação de criar tabela do Banco de Dados
     - models: pasta vazia
     - models:
@@ -520,54 +520,234 @@ __CRUD com FastAPI e SQL ALchemy__
             - __.\templates\admin\_base.html__: layout base para templetes
             - __.\templates\admin\index.html__: templates (herdeiro do layout base)
             - __.\templates\admin\menu.html__: template (agrupamento de rotas para serviços administrativo pasta __.\templates\admin__)
+            - area:
+                - __.\templates\admin\area\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\area\create.html__: templates (criar dados)
+                - __.\templates\admin\area\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\area\edit.html__: templates (editar dados)
+            - autor:
+                - __.\templates\admin\autor\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\autor\create.html__: templates (criar dados)
+                - __.\templates\admin\autor\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\autor\edit.html__: templates (editar dados)
+            - comentario:
+                - __.\templates\admin\comentario\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\comentario\create.html__: templates (criar dados)
+                - __.\templates\admin\comentario\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\comentario\edit.html__: templates (editar dados)
+            - duvida:
+                - __.\templates\admin\duvida\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\duvida\create.html__: templates (criar dados)
+                - __.\templates\admin\duvida\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\duvida\edit.html__: templates (editar dados) 
             - menbro:
                 - __.\templates\admin\membro\list.html__: templates (pagina principal de serviços = listagem de dados)
                 - __.\templates\admin\membro\create.html__: templates (criar dados)
                 - __.\templates\admin\membro\details.html__: templates (exibir detalhes de dados)
                 - __.\templates\admin\membro\edit.html__: templates (editar dados)
             - modals:
-            - __.\templates\admin\modals\delete.html__: templates (excluir registro no Banco de Dados)
-            
-            
-            
-
-    - views:
-        - __home_view.py__: Gerecimento das rotas paginas principais (publicas) 
-        - admin:
-            
-
-
-
-
+                - __.\templates\admin\modals\delete.html__: templates (excluir registro no Banco de Dados)
+            - post:
+                - __.\templates\admin\post\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\post\create.html__: templates (criar dados)
+                - __.\templates\admin\post\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\post\edit.html__: templates (editar dados)
+            - projeto:
+                - __.\templates\admin\projeto\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\projeto\create.html__: templates (criar dados)
+                - __.\templates\admin\projeto\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\projeto\edit.html__: templates (editar dados)
+            - tag:
+                - __.\templates\admin\tag\list.html__: templates (pagina principal de serviços = listagem de dados)
+                - __.\templates\admin\tag\create.html__: templates (criar dados)
+                - __.\templates\admin\tag\details.html__: templates (exibir detalhes de dados)
+                - __.\templates\admin\tag\edit.html__: templates (editar dados)
+        - views:
+            - __home_view.py__: Gerecimento das rotas paginas principais (publicas)
+            - __error_view.py__: Código personalizados de exceções HTML 404 e 500.  
+            - admin:
+                - __admin_view.py__: Agrupa as rotas dos serviços administrativo (__.\templates\admin__)
+                - __base_crud_view.py__: Estrutura genérica de INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__ (compartilha recursos)
+                - __membro_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __area_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __autor_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __comentario_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __duvida_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __post_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __projeto_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+                - __tag_admin.py__: INTEGRAÇÃO dos serviços (CRUD) do __.\controllers__
+        - __main.py__: Personalização de tratamento de erros (__.\templates\404.html__ e __.\templates\500.html__)
 ---
 
-
-
- **Aula_00**
+**Aula_29**
 - __Projeto FastAPI Website__
 
-- Resumo:
+- Resumo da aplicação:
     - 01 => __main.py__: Ativação da API, acesso as rotas HTML e arquivos estáticos.
     - 02 => __Pasta media__: Armazenamentos de downloads.
     - 03 => __Pasta templates__: Gerencia paginas HTML de liver acesso (publico) 
-        -   03.1 => __Sub pasta .\templates\admin__: Gerencia paginas HTML de acesso administrativo (restrito)
+        -   03.1 => __Pasta .\templates\admin__: Gerencia paginas HTML de acesso administrativo (restrito)
     - 04 => __Pasta core__: Configuração do Banco de Dados.
-    - 05 => __Pasta model__: Modelagem do Banco de dados, INTERAÇÃO DIRETA com Banco de Dados (Pasta core).
+    - 05 => __Pasta model__: Modelagem do Banco de dados, INTERAÇÃO DIRETA com Banco de Dados (__Pasta core__).
     - 06 => __Pasta controllers__: Gerenciamento dos recursos (CRUD) entrada e saída da API, INTERAÇÃO INDIRETA com Banco de Dados (Pasta model).
     - 07 => __Pasta views__: Gerenciamento de rotas templates HTML (Pasta templates)
-        -   07.1 => __Sub pata .\views\admin__: Faz INTERAÇÃO DIRETA do serviços (CRUD) da (Pasta controllers) e alimentação de dados em paginas HTML de acesso restrito (Sub pasta .\templates\admin)
+        -   07.1 => __Pasta .\views\admin__: Faz INTERAÇÃO DIRETA do serviços (CRUD) da (Pasta controllers) e alimentação de dados em paginas HTML de acesso restrito (Sub pasta .\templates\admin)
+
+- Simplificação de código:
+
+- Pasta e arquivos:
+    - controllers:
+        - __.\controllers\base_controller.py__: (recursos) => Adição de (Métodos genéricos)
+        - __.\controllers\autor_controller.py__: (recursos) => Implementação (Métodos genéricos) em "post_crud" e "put_crud"
+        - __.\controllers\post_controller.py__: (recursos) => Implementação (Métodos genéricos) em "post_crud" e "put_crud"
+    - views: 
+        - admin:
+            - __base_crud_view.py__: Adição de rotas na classe (BaseCrudView) para CLASSES FILHAS
+            - __membro_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __area_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __autor_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __comentario_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __duvida_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __post_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __projeto_admin.py__: Simplificação de rotas para CLASSE PAI
+            - __tag_admin.py__: Simplificação de rotas para CLASSE PAI
+    - templates:
+        - admin:
+            - area:
+                - __.\templates\admin\area\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\area\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\area\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\area\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - autor:
+                - __.\templates\admin\autor\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\autor\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\autor\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\autor\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - comentario:
+                - __.\templates\admin\comentario\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\comentario\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\comentario\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\comentario\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - duvida:
+                - __.\templates\admin\duvida\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\duvida\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\duvida\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\duvida\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - menbro:
+                - __.\templates\admin\membro\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\membro\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\membro\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\membro\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - post:
+                - __.\templates\admin\post\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\post\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\post\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\post\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - projeto:
+                - __.\templates\admin\projeto\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\projeto\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\projeto\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\projeto\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+            - tag:
+                - __.\templates\admin\tag\list.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\tag\create.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\tag\details.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
+                - __.\templates\admin\tag\edit.html__: Alteração link's nome "obj_id" para as rotas em __base_crud_view.py__
 ---
 
-- __Introdução Websites__
+**Aula_30**
+- __Projeto FastAPI Website, Segurança e Autenticação__
+
+- Adição de senha e email:
+
+- Pasta e arquivos:
+    - model:
+        - __.\model\membro_model.py__: Adição de senha e email
+    - controllers:
+        - __.\controllers\membro_controller.py__: Adição de senha e email
+    - views:
+        - admin:
+            - __.\views\admin\membro_admin.py__: Adição de senha e email
+            - __.\views\admin\base_crud_views.py__: Substituição de Route por APIRoute
+            - __.\views\admin\admin_views.py__: Eliminação de (prefix="/admin") devido mudança de Route por APIRoute
+    - templates:
+        - admin:
+            - membro:
+                - __.\templates\admin\membro\create.html__: Adição de senha e email
+                - __.\templates\admin\membro\edit.html__: Adição de senha e email
+                - __.\templates\admin\membro\details.html__: Adição de senha e email
+                - __.\templates\admin\membro\list.html__: Adição de senha e email
+---
+
+**Aula_31**
+- __Projeto FastAPI Website, Segurança e Autenticação__
+
+- Adição de login e criptografia hash:
+- Pasta e arquivos:
+    - views:
+        - __.\views\home_views.py__: Adição de login
+    - templates:
+        - __.\templates\base.html__: Adição de login
+        - __.\templates\login.html__: Criação do login
+
+
+**Aula_32**
+- __Projeto FastAPI Website, Segurança e Autenticação__
+
+- Adição de logout, criptografia hash e cookie de autenticação no navegador:
+- Pasta e arquivos:
+    - core:
+        - __.\core\configs.py__: Adição de autenticação (auth_cookie) e criptografia (SALTY)
+        - __.\core\auth.py__: Gerenciamento de criptografia (auth_cookie)
+    - views:
+            - __.\views\home_views.py__: Adição de logout, (criar e fechar) login c/ autenticação (auth_cookie)
+    - templates:
+        - admin:
+            - modals:
+                - __.\templates\admin\modals\logout.html__: Criação do logout
+            - __.\templates\admin\_base.html__: Inclusão de "__.\templates\admin\modals\logout.html__"
+            - __.\templates\admin\limbo.html__: Pagina para usuário não autorizados por (auth_cookie)
+    - static:
+        - admin:
+            - img:
+                - __static\admin\img\shall.jpg__: Imagem para paginal "__.\templates\admin\limbo.html__"
+    - controller:
+        - __.\membro_controller.py__: Gerar e validar "hash senha" do Banco de Dados
+---
+
+**Aula_33**
+- __Projeto FastAPI Website, Segurança e Autenticação__
+
+- Middlewares de seguração:
+    - Middlewares: são componentes intermediários que interceptam requisições e respostas para aplicar medidas de proteção à aplicação, antes que elas cheguem às rotas ou depois que saem delas. Como autenticação por Token, controle de acesso de recursos por usuário, limitação de requisições opr usuário e etc.
+
+- Pasta e arquivos:
+    - core:
+        - __.\core\deps.py__: Validação de login cadastrado no Banco de Dados
+    - views: 
+        - admin:
+            - __.\views\admin\admin_view.py__: Adição de validação de login "__.\core\deps.py__"
+            - __.\views\admin\membro_admin.py__: Adição de validação de login "__.\core\deps.py__" 
+            - __.\views\admin\area_admin.py__: Adição de validação de login "__.\core\deps.py__" 
+            - __.\views\admin\autor_admin.py__: Adição de validação de login "__.\core\deps.py__"
+            - __.\views\admin\base_crud_view.py__: Adição de validação de login "__.\core\deps.py__" 
+            - __.\views\admin\comentario_admin.py__: Adição de validação de login "__.\core\deps.py__"
+            - __.\views\admin\duvida_admin.py__: Adição de validação de login "__.\core\deps.py__"
+            - __.\views\admin\post_admin.py__: Adição de validação de login "__.\core\deps.py__"
+            - __.\views\admin\projeto_admin.py__: Adição de validação de login "__.\core\deps.py__"
+            - __.\views\admin\tag_admin.py__: Adição de validação de login "__.\core\deps.py__"
+    - __main.py__: Adição de Middlewares
+
+- __deps.py__: Limita acesso direto do usuário em paginas administrativas HTML, sem efetuar login
+---
 
 **Any_e_object**
 - __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
 
 - __object__ é a superclasse base de todas as classes — representa qualquer coisa.
 
-Portanto, quando você escreve model: object, está dizendo que model pode ser qualquer instância de qualquer classe — o tipo mais genérico possível.
+- Portanto, quando você escreve model: object, está dizendo que model pode ser qualquer instância de qualquer classe — o tipo mais genérico possível, em resumo:
 
-- __Em resumo__
     - __object__: mais seguro, mas mais restritivo para autocompletar/verificação de tipo.
 
     - __Any__: mais flexível, mas perde segurança de tipo (é como desligar o verificador de tipos).
@@ -598,6 +778,14 @@ Portanto, quando você escreve model: object, está dizendo que model pode ser q
     - from jose import jwt
     - from passlib.context import CryptContext
 ---
+
+**GERADOR_de_SALTY**
+- Cria um token seguro e aleatório para SALTY.
+    - SALTY é uma string usada como sal criptográfico para reforçar a segurança na geração de hashes.
+---
+
+**DECIMAL_HEXADECIMAL**
+- Conversão de valores decimal para exa decimal
 
 **DOCUMENTOS_EM_PDF**
 - Arquivos em PDF sobre REST APIS.

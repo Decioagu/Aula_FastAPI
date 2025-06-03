@@ -7,8 +7,8 @@ caminho_do_arquivo = Path(__file__).parent.parent
 # ======================= CONEXÃO BANCO DE DADOS ===============================
 from sqlalchemy.ext.declarative import declarative_base
 # Definição direta da URL do Banco de Dados
-# DB_URL: str = 'mysql+aiomysql://root:Enigma.1@localhost:3306/startup' # MySQL
-DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/startup.db" # SQLite
+# DB_URL: str = 'mysql+aiomysql://root:Enigma.1@localhost:3306/novo_startup' # MySQL
+DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/novo_startup.db" # SQLite
 
 DBBaseModel = declarative_base()
 

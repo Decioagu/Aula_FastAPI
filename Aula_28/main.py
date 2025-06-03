@@ -3,13 +3,13 @@ from fastapi import FastAPI
 import sys 
 import os 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__)))) # caminho absoluto do diretório
-from views import home_view, error_view
+from views import home_view, error_view ###
 from views.admin import admin_view ###
 
-app = FastAPI(docs_url=None, redoc_url=None, exception_handlers=error_view.exception_handlers) # elimina pagina de documentação FastAPI
+app = FastAPI(docs_url=None, redoc_url=None, exception_handlers=error_view.exception_handlers) # Personalização de tratamento de erros
 
 # ================================ ACESSO AS ROTAS ====================================
-app.include_router(home_view.router)
+app.include_router(home_view.router) ###
 app.include_router(admin_view.router) ###
 
 # ================================ CAMINHO DA URL ====================================
@@ -37,6 +37,6 @@ Observação, o uso de:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 independe e a execução:
-    Fora da pasta: uvicorn Aula_22.main:app --reload
+    Fora da pasta: uvicorn Aula_28.main:app --reload
     Dentro da pasta: uvicorn main:app --reload
 '''

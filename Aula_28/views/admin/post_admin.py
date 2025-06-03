@@ -25,7 +25,7 @@ class PostAdmin(BaseCrudView):
         self.router.routes.append(Route(path='/post/edit/{post_id:int}', endpoint=self.object_edit, methods=["GET", "POST"], name='post_edit'))
         self.router.routes.append(Route(path='/post/delete/{post_id:int}', endpoint=self.object_delete, methods=["DELETE",], name='post_delete'))
        
-        super().__init__('post')
+        super().__init__('post') # nome (classe fila)
     
 
     async def object_list(self, request: Request) -> Response:

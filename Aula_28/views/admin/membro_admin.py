@@ -24,7 +24,7 @@ class MembroAdmin(BaseCrudView):
         self.router.routes.append(Route(path='/membro/edit/{membro_id:int}', endpoint=self.object_edit, methods=["GET", "POST"], name='membro_edit'))
         self.router.routes.append(Route(path='/membro/delete/{membro_id:int}', endpoint=self.object_delete, methods=["DELETE"], name='membro_delete'))
        
-        super().__init__('membro') # classe Pai (BaseCrudView)
+        super().__init__('membro') # nome (classe fila)
     
 
     async def object_list(self, request: Request) -> Response:

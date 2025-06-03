@@ -63,7 +63,7 @@ class Settings(BaseSettings):
     # 60 minutos * 24 horas * 7 dias => 1 semana
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # Tempo de acesso ao token
 
-    API_V1_STR: str = '/routes/v1' # anotação rota
+    # API_V1_STR: str = '/routes/v1' # anotação rota
 
     # Define que as variáveis de ambiente no Pydantic devem ser sensíveis a maiúsculas e minúsculas.
     class Config:

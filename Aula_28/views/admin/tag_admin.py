@@ -24,7 +24,7 @@ class TagAdmin(BaseCrudView):
         self.router.routes.append(Route(path='/tag/edit/{tag_id:int}', endpoint=self.object_edit, methods=["GET", "POST"], name='tag_edit'))
         self.router.routes.append(Route(path='/tag/delete/{tag_id:int}', endpoint=self.object_delete, methods=["DELETE",], name='tag_delete'))
        
-        super().__init__('tag')
+        super().__init__('tag') # nome (classe fila)
     
 
     async def object_list(self, request: Request) -> Response:

@@ -12,7 +12,7 @@ from controllers.base_controller import BaseController
 class BaseCrudView:
 
     def __init__(self, template_base: str) -> None:
-        self.template_base: str = template_base # recebe nome dado ao (diretório de templates)
+        self.template_base: str = template_base # recebe nome (classe fila)
     
 
     async def object_create(self) -> Response:

@@ -25,7 +25,7 @@ class AutorAdmin(BaseCrudView):
         self.router.routes.append(Route(path='/autor/edit/{autor_id:int}', endpoint=self.object_edit, methods=["GET", "POST"], name='autor_edit'))
         self.router.routes.append(Route(path='/autor/delete/{autor_id:int}', endpoint=self.object_delete, methods=["DELETE",], name='autor_delete'))
        
-        super().__init__('autor')
+        super().__init__('autor') # nome (classe fila)
     
 
     async def object_list(self, request: Request) -> Response:

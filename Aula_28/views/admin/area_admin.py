@@ -24,7 +24,7 @@ class AreaAdmin(BaseCrudView):
         self.router.routes.append(Route(path='/area/edit/{area_id:int}', endpoint=self.object_edit, methods=["GET", "POST"], name='area_edit'))
         self.router.routes.append(Route(path='/area/delete/{area_id:int}', endpoint=self.object_delete, methods=["DELETE",], name='area_delete'))
        
-        super().__init__('area')
+        super().__init__('area') # nome (classe fila)
     
 
     async def object_list(self, request: Request) -> Response:

@@ -45,4 +45,4 @@ Aula_FastAPI/
 │   templates/
 │   └── index.html
 │   └── servico.html       
-    '''
+'''
