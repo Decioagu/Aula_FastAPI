@@ -257,7 +257,7 @@ __CRUD com FastAPI e SQL Model__
 
 __Autenticação JWT com FastAPI e SQL ALchemy__
 
-- A autenticação __JWT__ (JSON Web Token) em FastAPI é um método de autenticação baseado em tokens que permite que usuários se autentiquem de forma segura e sem a necessidade de armazenar sessões no servidor.
+- A autenticação __JWT__ (JSON Web Token) em FastAPI é um método de autenticação baseado em tokens que permite que usuários se autentiquem de forma segura.
 
 - Pasta e arquivos:
     - config:
