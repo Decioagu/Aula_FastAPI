@@ -42,6 +42,8 @@ __CRUD com FastAPI e BaseModel__
     - Rotas: @app.get(path), @app.post(path), @app.put(path) e @app.delete(path):
         - path: especifica qual __URL__ será associada para função correspondente.
 
+    - O CRUD é o fundamento da persistência de dados, toda aplicação que **cria**, **lê**, **atualiza** ou **exclui** informações (em um BANCO DE DADOS ou API) está implementando é um CRUD.
+
     - CRUD - Create   |  Read        |  Update     |  Delete
     - =====> Criar    |  Ler         |  Atualizar  |  Excluir
     - <==========================================================>
