@@ -76,7 +76,7 @@ if __name__ == 'main':
 
     run('main:app', host="127.0.0.1", port=8000, reload=True)
 
-# uvicorn Aula_18.aula_18:app --reload
+# uvicorn Aula_18.aula_18b:app --reload
 
 '''
 Você pode acessar a URL com filtros assim:

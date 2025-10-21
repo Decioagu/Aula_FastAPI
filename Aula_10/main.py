@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__)))) # caminho absoluto
 from config.conf_db import settings
 from routes.v1.api import api_router 
 

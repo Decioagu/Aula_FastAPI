@@ -72,24 +72,24 @@ if __name__ == 'main':
 # Acesso ao terminal: uvicorn Aula_01.main:app --reload
 
     '''
-    Parâmetros run(<nome_arquivo>:app, host, port, log_level, reload):
+    # run(<nome_arquivo>:app, host, port, log_level, reload):
 
-    # <nome_arquivo>:app (obrigatório): Este argumento representa o aplicativo ASGI 
+        # <nome_arquivo>:app (obrigatório): Este argumento representa o aplicativo ASGI 
 
-    # host (opcional, padrão: "0.0.0.0"): endereço IP no qual o aplicativo escutará as 
-    solicitações recebidas ("0.0.0.0" ou "127.0.0.1": localhost)
+        # host (opcional, padrão: "0.0.0.0"): endereço IP no qual o aplicativo escutará as 
+        solicitações recebidas ("0.0.0.0" ou "127.0.0.1": localhost)
 
-    # port (opcional, padrão: 8000): Este argumento define o número da porta na qual 
-    o aplicativo escutará o tráfego. 
+        # port (opcional, padrão: 8000): Este argumento define o número da porta na qual 
+        o aplicativo escutará o tráfego. 
 
-    # log_level (opcional, padrão: "info"): Este parâmetro controla o detalhamento 
-    das mensagens de log emitidas pelo Uvicorn durante a execução do aplicativo. 
-        Os valores possíveis incluem:
-        "debug": mostra todas as mensagens de registro (mais detalhadas).
-        "info"(padrão): Mostra mensagens informativas.
-        "warning": mostra avisos e erros.
-        "error": Mostra apenas erros.
+        # log_level (opcional, padrão: "info"): Este parâmetro controla o detalhamento 
+        das mensagens de log emitidas pelo Uvicorn durante a execução do aplicativo. 
+            Os valores possíveis incluem:
+            "debug": mostra todas as mensagens de registro (mais detalhadas).
+            "info"(padrão): Mostra mensagens informativas.
+            "warning": mostra avisos e erros.
+            "error": Mostra apenas erros.
 
-    # reload (opcional, padrão: True): Esta configuração permite o recarregamento automático 
+        # reload (opcional, padrão: True): Esta configuração permite o recarregamento automático 
     '''
 

@@ -58,7 +58,7 @@ async def get_hoteis(): # CRUD método GET
     return hoteis
 
 # rota (Ler dados Hotel por id)
-@app.get('/hoteis/{hotel_id}')
+@app.get('/hoteis/{hotel_id}') # parâmetro de rota {hotel_id}
 async def get_hotel_por_id(hotel_id: str): # CRUD método GET
     try:
         for hotel in hoteis:

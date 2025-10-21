@@ -4,7 +4,9 @@ from pydantic import BaseModel as SCBaseModel
 
 '''
 O "BaseModel" no Pydantic é uma classe base que permite a 
-criação de modelos de dados com validação e tipagem automática.
+criação de modelos de dados com validação e tipagem.
+
+O "SCBaseModel" neste caso é o apelido para "BaseModel"
 
 "Optional" é um tipo genérico que representa um valor que pode ser do tipo especificado ou None
 '''
