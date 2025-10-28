@@ -11,7 +11,7 @@ O "SCBaseModel" neste caso é o apelido para "BaseModel"
 "Optional" é um tipo genérico que representa um valor que pode ser do tipo especificado ou None
 '''
 # Modelagem (API)
-class CursoSchema(SCBaseModel):
+class CursoSchema(SCBaseModel): # Para o uso da função Get
     # (modelo: tipo)
     id: Optional[int]
     titulo: str
@@ -26,7 +26,7 @@ class CursoSchema(SCBaseModel):
         from_attributes = True
 
 # Modelagem (API)
-class CursoSchemaSemID(SCBaseModel): # Para POST => Id automático
+class CursoSchemaSemID(SCBaseModel): # Para o uso das funções Post e Put (Id é auto incrementado)
     # (modelo: tipo)
     titulo: str
     aulas: int

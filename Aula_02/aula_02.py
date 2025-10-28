@@ -11,7 +11,7 @@ Ex:
 '''
 
 # modelagem e validação tipo (tratamento de entrada do usuário)
-class Hotel(BaseModel):
+class Hotel(BaseModel): # Para o uso das funções Post e Put
     # (modelo: tipo = valor)
     hotel_id: str
     nome: str

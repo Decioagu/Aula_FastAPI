@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from models.curso_model import CursoModel # Modelagem Banco de Dados
-from schemas.curso_schemas import CursoSchema, CursoSchemaSemID # Modelagem API
+from schemas.curso_schemas import CursoSchema # Modelagem API (Get)
+from schemas.curso_schemas import CursoSchemaSemID # Modelagem API (Post e Put)
 from config.conf_db import get_session # Abrir e fechar Sessão
 
 rota_cursos = APIRouter() # roteador

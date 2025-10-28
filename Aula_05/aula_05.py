@@ -9,7 +9,7 @@ criação de modelos de dados com validação e tipagem automática
 '''
 
 # modelagem e validação tipo (tratamento de entrada do usuário)
-class Curso(BaseModel):
+class Curso(BaseModel): # Para o uso das funções Post e Put (Id é auto incrementado)
     # (modelo: tipo = valor)
     titulo: str
     aulas: Optional[int] = 1
