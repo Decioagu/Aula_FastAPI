@@ -6,9 +6,12 @@ DB_URL: str = f"sqlite+aiosqlite:///{caminho_do_arquivo}/meu_hotel.db"
 
 # ======================= CONEXÃO BANCO DE DADOS (config.py) ============================
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
+
 
 engine: AsyncEngine = create_async_engine(DB_URL, echo=False)
+
+Base = declarative_base() # (config.py)
 
 # ========================= SESSÃO BANCO DE DADOS (config.py) ============================
 SessionLocal = AsyncSession = sessionmaker(
@@ -28,7 +31,7 @@ async def get_db():
     finally:
         await db.close()
 
-# ==================== MODELAGEM DO BANCO DE DADOS (model) ==========================
+# ==================== MODELAGEM DO BANCO DE DADOS (models e schemas) ==========================
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -36,9 +39,7 @@ from pydantic import BaseModel
 from pydantic import EmailStr
 from typing import Optional, List
 
-Base = declarative_base() # (config.py)
-
-class HotelModel(Base):
+class HotelModel(Base): # BANCO DE DADOS (models)
     __tablename__ = "hoteis"
     hotel_id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(80), nullable=False, unique=True)
@@ -46,7 +47,7 @@ class HotelModel(Base):
     hotel_usuario_id = Column(Integer, ForeignKey('usuarios.usuario_id')) # Chave estrangeira
     criador = relationship("UsuarioModel", back_populates='usuario_hotel', lazy='joined') # relacionamento
 
-class HotelSchema(BaseModel):
+class HotelSchema(BaseModel): # MODELAGEM API (schemas)
     hotel_id: Optional[int] = None
     nome: Optional[str] = None
     cidade: Optional[str] = None
@@ -55,7 +56,7 @@ class HotelSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class UsuarioModel(Base):
+class UsuarioModel(Base): # BANCO DE DADOS (models)
     __tablename__ = 'usuarios'
     usuario_id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(40), nullable=False, unique=True)
@@ -64,7 +65,7 @@ class UsuarioModel(Base):
     ativado =  Column(Boolean, default=False)
     usuario_hotel = relationship("HotelModel", cascade="all, delete-orphan", back_populates="criador", uselist=True, lazy="joined") # relacionamento
 
-class UsuarioSchema(BaseModel):
+class UsuarioSchema(BaseModel): # MODELAGEM API (schemas)
     usuario_id: Optional[int] = None
     nome: str
     senha: str
@@ -73,12 +74,9 @@ class UsuarioSchema(BaseModel):
 
     class Config:
         from_attributes = True
-
-class UsuarioSchemaCreate(UsuarioSchema):
-    senha: str
-
+    
 # Atualizar usuário
-class UsuarioSchemaUp(BaseModel):
+class UsuarioSchemaUp(BaseModel): # MODELAGEM API (schemas)
     nome: Optional[str] = None
     senha: Optional[str] = None
     email: Optional[EmailStr] = None
@@ -87,10 +85,13 @@ class UsuarioSchemaUp(BaseModel):
     class Config:
         from_attributes = True
 
+# ================================ CONFIGURAÇÃO AUTENTICAÇÃO ===========================================
+#=======================================================================================================
+
 # ---------------------- CONFIGURAÇÃO SEGURANÇA JWT (config.py) -------------------------------
 SECRET_KEY = "tMhSB1OGVAQei3NP5Dho6H63_IhTbyPkFlsCwC6L-bE"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 30 # Tempo de expiração do token (minutos)
 
 # ----------------------- MODELO DE AUTENTICAÇÃO (security.py) --------------------------------
 from passlib.context import CryptContext
@@ -106,11 +107,25 @@ def verificar_senha(senha: str, hash_senha: str) -> bool:
 def gerar_hash_senha(senha: str) -> str:
     return CRIPTO.hash(senha)
 
-# --------------------------- ROTA DE AUTENTICAÇÃO TOKEN DE ACESSO  (auth.py) ----------------------------------
+# --------------------------- ROTA DE AUTENTICAÇÃO TOKEN DE ACESSO (auth.py) ----------------------------------
 from fastapi.security import OAuth2PasswordBearer
 
 # Endpoint para autenticação token (rota)
 oauth2_schema = OAuth2PasswordBearer(tokenUrl=f"usuarios/login")
+
+# Formulário Personalizado: OAuth2PasswordRequestForm
+from fastapi import Form
+
+class Formulario_Login_Usuario:
+    def __init__(
+        self,
+        email: str = Form(..., description="E-mail do usuário"), # Form(...) → campo obrigatório.
+        senha: str = Form(..., description="Senha do usuário") # Form(...) → campo obrigatório.
+    ):
+        self.email = email
+        self.senha = senha
+
+
 
 # --------------------------- AUTENTICAR USUÁRIO E SENHA (auth.py) ----------------------------------
 # Autentica senha e usuário por e-mail
@@ -210,24 +225,49 @@ async def get_current_user(db: SessionLocal = Depends(get_db), token: str = Depe
             raise credential_exception # Exceção ...
 
         return usuario
+# =========================== FIM DA CONFIGURAÇÃO AUTENTICAÇÃO =========================================
+#=======================================================================================================
 
-# =================== INSTANCIAR FASTAPI ========================
+# =================== INSTANCIAR FASTAPI (main.py) ========================
 from fastapi import FastAPI
 app = FastAPI()
 # Função para criar a tabela, chamada no evento de inicialização
 
-# ========================== ROTA ===============================
-
 # rota (home)
 @app.get('/', description='Retorna uma mensagem', summary='Documento', tags=["Documentação"])
 async def index(): # recurso GET
-   return {"http://127.0.0.1:8000/docs"}
+   return "http://127.0.0.1:8000/docs"
 
-''' APIRouter é uma classe usada para organizar e modularizar as rotas da aplicação '''
-# from fastapi import APIRouter
-# router = APIRouter() # roteador
+'''
+# GERENCIADOR DE ROTAS (api.py)
+# ETAPA INTEGRADA NESTE PROJETO
 
-# ========================== CRUD USUÁRIOS ===============================
+from config import settings (configuração de modulo interno "config.py")
+from routes import api_router (configuração de modulo interno "api.py")
+
+app.include_router(api_router, prefix=settings.API_V1_STR)
+'''
+# ========================== GERENCIADOR DE ROTAS (api.py) ==========================
+
+'''
+# ENDPOINTS
+# ETAPA INTEGRADA NESTE PROJETO
+
+from endpoints import usuario (configuração de modulo interno "usuario.py")
+from endpoints import hotel (configuração de modulo interno "hotel.py")
+
+# APIRouter é uma classe usada para organizar e modularizar as rotas da aplicação
+from fastapi import APIRouter
+api_router = APIRouter() # roteador
+
+
+api_router.include_router(usuario.router, prefix='/usuarios', tags=['usuarios']) # rota
+api_router.include_router(hotel.router, prefix='/hoteis', tags=['hoteis']) # rota
+'''
+
+# =================================== ENDPOINTS =======================================
+# ========================== CRUD USUÁRIOS (usuario.py) ===============================
+
 from fastapi import status, Depends, HTTPException, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
@@ -240,7 +280,7 @@ async def list_usuarios(db: SessionLocal = Depends(get_db)):
     async with db as session:
         query = select(UsuarioModel)
         result = await session.execute(query)
-        usuarios: List[UsuarioSchemaCreate] = result.scalars().unique().all() # Encapsular em lista todos os usuários
+        usuarios: List[UsuarioSchema] = result.scalars().unique().all() # Encapsular em lista todos os usuários
 
         return usuarios
     
@@ -280,16 +320,47 @@ async def post_usuario(usuario: UsuarioSchema, db: SessionLocal = Depends(get_db
                                 detail='Já existe um usuário com este email cadastrado.')
 
 # POST / http://127.0.0.1:8000/usuario/login
-@app.post('/usuario/login', tags=['usuario'])
-async def login_usuario(form_data: OAuth2PasswordRequestForm = Depends(), db: SessionLocal = Depends(get_db)):
+@app.post(
+    '/usuario/login',
+    tags=['usuario'],
+    summary='Autenticação de usuários',
+    description='senha criptografadas = nome do usuário',
+)
+async def login_usuario(formulario_de_inf: Formulario_Login_Usuario = Depends(), db: SessionLocal = Depends(get_db)):
+
+    usuario = await autenticar(email=formulario_de_inf.email, senha=formulario_de_inf.senha, db=db)
+
+    if not usuario:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Dados de acesso incorretos.'
+        )
+
+    return JSONResponse(
+        content={"access_token": criar_token_acesso(sub=usuario.usuario_id), "token_type": "bearer"},
+        status_code=status.HTTP_200_OK
+    )
+
+'''
+# Trocado pelo "Formulario_Login_Usuario" acima
+@app.post('/usuario/login', 
+          tags=['usuario'],
+          summary='Autenticação de usuários',
+          description='[username = email, password = senha do usuário]',
+          response_model= UsuarioSchema,
+          response_description='Autenticação de usuários'
+          )
+async def login_usuario(formulario_de_inf: OAuth2PasswordRequestForm = Depends(), db: SessionLocal = Depends(get_db)):
+
     
-    usuario = await autenticar(email=form_data.username, senha=form_data.password, db=db)
+    usuario = await autenticar(email=formulario_de_inf.username, senha=formulario_de_inf.password, db=db)
 
     if not usuario:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail='Dados de acesso incorretos.')
 
     return JSONResponse(content={"access_token": criar_token_acesso(sub=usuario.usuario_id), "token_type": "bearer"}, status_code=status.HTTP_200_OK)
+'''
 
 # PUT / http://127.0.0.1:8000/usuario/id
 @app.put("/usuario/{usuario_id}", response_model=UsuarioSchemaUp, tags=['usuario'])
@@ -340,7 +411,8 @@ async def delete_usuario(usuario_id: int, db: SessionLocal = Depends(get_db), us
             raise HTTPException(detail='Usuário não encontrado.',
                                 status_code=status.HTTP_404_NOT_FOUND)
 
-# ========================== CRUD HOTÉIS ===============================
+# =================================== ENDPOINTS =======================================
+# ========================== CRUD HOTÉIS (hotel.py) ===============================
 
 # GET / http://127.0.0.1:8000/hotel/hoteis
 @app.get("/hotel/hoteis", response_model=list[HotelSchema], tags=['hotel'])
@@ -433,6 +505,7 @@ async def delete_hotel(hotel_id: int, db: SessionLocal = Depends(get_db), usuari
             raise HTTPException(detail='Hotel não encontrado.',
                                 status_code=status.HTTP_404_NOT_FOUND)
 
+# =================== INSTANCIAR FASTAPI (main.py) ========================
 if __name__ == 'main':
     
     from uvicorn import run 

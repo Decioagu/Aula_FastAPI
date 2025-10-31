@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 from config.conf_db import settings
-from routes.v1.api import api_router 
+from routes.v1.api_router import api_router 
 
 app: FastAPI = FastAPI(title='Curso API - FastAPI SQL Model')
 
@@ -13,7 +13,7 @@ app: FastAPI = FastAPI(title='Curso API - FastAPI SQL Model')
 async def index(): # recurso GET
    return {"http://127.0.0.1:8000/docs"}
 
-app.include_router(api_router, prefix=settings.API_V1_STR)
+app.include_router(api_router, prefix=settings.API_V1_STR) #
 
 
 if __name__ == '__main__':

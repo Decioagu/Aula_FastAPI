@@ -308,6 +308,10 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 **Aula_17**
 - __Resumo de autenticação JWT com FastAPI e SQL ALchemy__
+    - Em login (http://127.0.0.1:8000/usuario/login): 
+        - Renomear parâmetro da documentação
+            - username = email do usuário
+            - password = senha do usuário
 ---
 
 **Aula_18**
@@ -769,16 +773,21 @@ __CRUD com FastAPI e SQL ALchemy__
 
 **JWT**
 - __JWT__ (JSON Web Tokens) é um padrão para autenticação e troca de informações de forma segura entre partes, utilizando um token assinado digitalmente.
+
+### Link: [JWT](JWT/JWT.md)
+
 ---
 
 **CryptContext**
+- Criptografia de texto por meio de hash
 - __CryptContext__ é uma classe do Passlib que facilita a configuração e o gerenciamento de algoritmos de hash de senha. Compara a senha fornecida com o hash armazenado e retorna True se forem equivalentes. Não é possível "descriptografar".
 ---
 
 **CRIPTO**
-- Uso pratico de __JWT__ e __CryptContext__:
-    - from jose import jwt
+- Criptografia de texto por meio de hash e autenticação.
+- Uso pratico de __CryptContext__ e __JWT__:
     - from passlib.context import CryptContext
+    - from jose import jwt
 ---
 
 **GERADOR_de_SALTY**
