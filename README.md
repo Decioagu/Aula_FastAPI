@@ -320,6 +320,8 @@ __Autenticação JWT com FastAPI e SQL ALchemy__
 
 **Aula_19**
 - __Introdução Websites com FastAPI__
+
+- **HTMLResponse** é um tipo especial de resposta HTTP que o FastAPI usa para enviar conteúdo HTML (como páginas da web) para o cliente.
 ---
 
 **Aula_20**
