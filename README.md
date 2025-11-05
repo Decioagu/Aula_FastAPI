@@ -749,7 +749,7 @@ __CRUD com FastAPI e SQL ALchemy__
 - __deps.py__: Limita acesso direto do usuário em paginas administrativas HTML, sem efetuar login
 ---
 
-**Any_e_object**
+**Aula_Any_e_object**
 - __Any__ faz parte do módulo typing e é usado para indicar que uma variável, argumento ou retorno de função pode ser de qualquer tipo.
 
 - __object__ é a superclasse base de todas as classes — representa qualquer coisa.
@@ -799,6 +799,17 @@ __CRUD com FastAPI e SQL ALchemy__
 
 **DECIMAL_HEXADECIMAL**
 - Conversão de valores decimal para exa decimal
+---
+
+**UUID4**
+Gerador e validação de UUID4 (strings de 36 caracteres alfanuméricos aleatórios)
+- Diferença entre uuid4() e UUID4
+    - uuid4() (da biblioteca uuid) gera um novo UUID aleatório.
+    - UUID4 (do Pydantic) é apenas um tipo para validação, usado principalmente em parâmetros e campos de modelo.
+
+- Aplicação de uuid4() e UUID4 na prática
+    - Esses dois são usados principalmente para identificar registros de forma única em aplicações, especialmente APIs e bancos de dados.
+---
 
 **DOCUMENTOS_EM_PDF**
 - Arquivos em PDF sobre REST APIS.

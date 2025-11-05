@@ -6,7 +6,7 @@ from fastapi import UploadFile
 
 from aiofile import async_open
 
-from uuid import uuid4
+from uuid import uuid4 # uuid4 gera um id aleatorio
 
 from core.configs import settings
 from core.configs import get_session
