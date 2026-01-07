@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Lista de Pessoas{% endblock %}
+{% block content %}
+<a href="/create">Adicionar Pessoa</a>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th><th>Nome</th><th>Idade</th><th>Ações</th>
+    </tr>
+    {% for pessoa in pessoas %}
+    <tr>
+        <td>{{ pessoa.id }}</td>
+        <td>{{ pessoa.nome }}</td>
+        <td>{{ pessoa.idade }}</td>
+        <td>{{ pessoa.cpf }}</td>
+        <td>
+            <a href="/edit/{{ pessoa.id }}">Editar</a> |
+            <a href="/delete/{{ pessoa.id }}">Excluir</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

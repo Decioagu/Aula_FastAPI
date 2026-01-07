@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware import Middleware # Importando o FastAPI e Middleware
-from fastapi.middleware.trustedhost import TrustedHostMiddleware # Middleware para validar o host
+from fastapi.middleware.trustedhost import TrustedHostMiddleware # Middleware para permitir hosts
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware # Middleware para redirecionar para HTTPS
 
 import sys 
 import os 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__)))) # caminho absoluto do diretório
-from views import home_view, error_view 
+from views import home_view, error_view # Importando as views erro customizados
 from views.admin import admin_view 
 
+# Personalização de tratamento de erros
 middlewares = [
     Middleware(
         TrustedHostMiddleware, 
@@ -19,7 +20,7 @@ middlewares = [
 
 app = FastAPI(docs_url=None, 
               redoc_url=None, 
-              exception_handlers=error_view.exception_handlers,
+              exception_handlers=error_view.exception_handlers, # Personalização de tratamento de erros
               middleware=middlewares) # Personalização de tratamento de erros
 
 # ================================ ACESSO AS ROTAS ====================================

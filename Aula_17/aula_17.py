@@ -56,6 +56,14 @@ class HotelSchema(BaseModel): # MODELAGEM API (schemas)
     class Config:
         from_attributes = True
 
+class HotelSchemaUP(BaseModel): # MODELAGEM API (schemas)
+    nome: Optional[str] = None
+    cidade: Optional[str] = None
+    hotel_usuario_id: Optional[int] = None    
+
+    class Config:
+        from_attributes = True
+
 class UsuarioModel(Base): # BANCO DE DADOS (models)
     __tablename__ = 'usuarios'
     usuario_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -65,22 +73,24 @@ class UsuarioModel(Base): # BANCO DE DADOS (models)
     ativado =  Column(Boolean, default=False)
     usuario_hotel = relationship("HotelModel", cascade="all, delete-orphan", back_populates="criador", uselist=True, lazy="joined") # relacionamento
 
-class UsuarioSchema(BaseModel): # MODELAGEM API (schemas)
-    usuario_id: Optional[int] = None
-    nome: str
-    senha: str
-    email: EmailStr
-    ativado: Optional[bool] = False 
-
-    class Config:
-        from_attributes = True
-    
 # Atualizar usuário
 class UsuarioSchemaUp(BaseModel): # MODELAGEM API (schemas)
     nome: Optional[str] = None
     senha: Optional[str] = None
     email: Optional[EmailStr] = None
-    ativado: Optional[bool] = None
+    ativado: Optional[bool] = False
+
+    class Config:
+        from_attributes = True
+
+class UsuarioSchema(UsuarioSchemaUp): # MODELAGEM API (schemas)
+    usuario_id: Optional[int] = None   
+
+
+# Atualizar usuário
+class UsuarioSchemaLogin(BaseModel): # MODELAGEM API (schemas)
+    senha: Optional[str] = None
+    email: Optional[EmailStr] = None
 
     class Config:
         from_attributes = True
@@ -301,8 +311,8 @@ async def get_usuario(usuario_id: int, db: SessionLocal = Depends(get_db)):
                                 status_code=status.HTTP_404_NOT_FOUND)
 
 # POST / http://127.0.0.1:8000/usuario/cadastro
-@app.post('/usuario/cadastro', status_code=status.HTTP_201_CREATED, response_model=UsuarioSchema, tags=['usuario'])
-async def post_usuario(usuario: UsuarioSchema, db: SessionLocal = Depends(get_db)):
+@app.post('/usuario/cadastro', status_code=status.HTTP_201_CREATED, response_model=UsuarioSchemaUp, tags=['usuario'])
+async def post_usuario(usuario: UsuarioSchemaUp, db: SessionLocal = Depends(get_db)):
 
     # Adicionar no Banco de Dados
     novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, 
@@ -326,6 +336,7 @@ async def post_usuario(usuario: UsuarioSchema, db: SessionLocal = Depends(get_db
     tags=['usuario'],
     summary='Autenticação de usuários',
     description='senha criptografada = nome do usuário',
+    response_model=UsuarioSchemaLogin
 )
 async def login_usuario(formulario_de_inf: Formulario_Login_Usuario = Depends(), db: SessionLocal = Depends(get_db)):
 
@@ -394,7 +405,7 @@ async def update_usuario(usuario_id: int, usuario: UsuarioSchemaUp, db: SessionL
                                     detail='Já existe um usuário com este email cadastrado.')
         
 # 4. Excluir / http://127.0.0.1:8000/usuario/id
-@app.delete("/usuario/{usuario_id}", tags=['usuario'])
+@app.delete("/usuario/{usuario_id}", response_model=int, tags=['usuario'])
 async def delete_usuario(usuario_id: int, db: SessionLocal = Depends(get_db), usuario_logado: UsuarioModel = Depends(get_current_user)):
 
     async with db as session:
@@ -441,8 +452,8 @@ async def get_hotel(artigo_id: int, db: SessionLocal = Depends(get_db)):
                                 status_code=status.HTTP_404_NOT_FOUND)
 
 # POST / http://127.0.0.1:8000/hotel/cadastro
-@app.post('/hotel/cadastro', status_code=status.HTTP_201_CREATED, response_model=HotelSchema, tags=['hotel'])
-async def post_artigo(hotel: HotelSchema, usuario_logado: UsuarioModel = Depends(get_current_user), db: SessionLocal = Depends(get_db)):
+@app.post('/hotel/cadastro', status_code=status.HTTP_201_CREATED, response_model=HotelSchemaUP, tags=['hotel'])
+async def post_artigo(hotel: HotelSchemaUP, usuario_logado: UsuarioModel = Depends(get_current_user), db: SessionLocal = Depends(get_db)):
     
     novo_hotel: HotelModel = HotelModel(
                                             nome=hotel.nome, 
@@ -461,14 +472,14 @@ async def post_artigo(hotel: HotelSchema, usuario_logado: UsuarioModel = Depends
                                 detail='Nome já cadastrado.')
 
 # PUT / http://127.0.0.1:8000/hotel/id
-@app.put("/hotel/{hotel_id}", response_model=HotelSchema,  tags=['hotel'])
-async def put_hotel(hotel_id: str, hotel: HotelSchema, db: SessionLocal = Depends(get_db), usuario_logado: UsuarioModel = Depends(get_current_user)):
+@app.put("/hotel/{hotel_id}", response_model=HotelSchemaUP,  tags=['hotel'])
+async def put_hotel(hotel_id: str, hotel: HotelSchemaUP, db: SessionLocal = Depends(get_db), usuario_logado: UsuarioModel = Depends(get_current_user)):
 
     async with db as session:
         query = select(HotelModel).filter(HotelModel.hotel_id == hotel_id).filter(
                                           HotelModel.hotel_usuario_id == usuario_logado.usuario_id)
         result = await session.execute(query)
-        hotel_up: HotelSchema = result.scalars().unique().one_or_none()
+        hotel_up: HotelSchemaUP = result.scalars().unique().one_or_none()
 
         if not hotel_up:
             raise HTTPException(status_code=404, detail="Hotel não encontrado")
@@ -488,7 +499,7 @@ async def put_hotel(hotel_id: str, hotel: HotelSchema, db: SessionLocal = Depend
                                     detail='Nome já cadastrado.')
      
 # 4. Excluir / http://127.0.0.1:8000/hotel/id
-@app.delete("/hotel/{hotel_id}", tags=['hotel'])
+@app.delete("/hotel/{hotel_id}", response_model=int, tags=['hotel'])
 async def delete_hotel(hotel_id: int, db: SessionLocal = Depends(get_db), usuario_logado: UsuarioModel = Depends(get_current_user)):
 
     async with db as session:

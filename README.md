@@ -777,7 +777,6 @@ __CRUD com FastAPI e SQL ALchemy__
 - __JWT__ (JSON Web Tokens) é um padrão para autenticação e troca de informações de forma segura entre partes, utilizando um token assinado digitalmente.
 
 ### Link: [JWT](JWT/JWT.md)
-
 ---
 
 **CryptContext**

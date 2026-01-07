@@ -7,7 +7,6 @@ from fastapi.exceptions import HTTPException
 ## instância de conexão Banco de Dados
 from core.configs import settings
 from core.auth import set_auth, unset_auth
-# from core.auth import set_auth, unset_auth
 from controllers.membro_controller import MembroController
 
 router = APIRouter() ## roteador de rotas

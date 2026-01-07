@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CRUD Pessoas{% endblock %}</title>
+</head>
+<body>
+    <h1>CRUD de Pessoas</h1>
+    <hr>
+<nav>
+    {% if usuario %}
+        Olá, {{ usuario }} |
+        <a href="/logout">Sair</a>
+    {% else %}
+        <a href="/login">Login</a>
+    {% endif %}
+</nav>
+<hr>
+{% block content %}{% endblock %}
+</body>
+</html>

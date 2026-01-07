@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Editar Pessoa{% endblock %}
+{% block content %}
+<h2>Editar Pessoa</h2>
+
+<form method="post" action="/edit/{{ pessoa.id }}">
+    Nome: <input type="text" name="nome" value="{{ pessoa.nome }}" required><br><br>
+    Idade: <input type="number" name="idade" value="{{ pessoa.idade }}" required><br><br>
+    CPF: <input type="text" name="cpf" value="{{ pessoa.cpf }}" required><br><br>
+    <button type="submit">Salvar</button>
+</form>
+
+<a href="/">Voltar</a>
+{% endblock %}

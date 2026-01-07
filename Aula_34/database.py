@@ -1,4 +1,4 @@
-from aula_17 import engine, Base ### Configuração do Banco de Dados
+from aula_34 import engine, Base ### Configuração do Banco de Dados
 
 import sys
 import os
@@ -7,12 +7,12 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
 async def create_tables() -> None:
-    import __all_models
+    from aula_34 import Pessoa
     print('Criando as tabelas no banco de dados...')
 
     async with engine.begin() as conn:
         print(Base.metadata.tables.keys()) # Exibir nome da tabela (.\models\curso_model.py)
-        # await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
     print('Tabelas criadas com sucesso...')
 

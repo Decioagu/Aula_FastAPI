@@ -46,7 +46,7 @@ em múltiplos endpoints de forma limpa e organizada.
 '''
 
 # Consulta no Banco de Dados
-@asynccontextmanager ###
+@asynccontextmanager # Gerenciador de Contexto
 async def get_session() -> Generator:
     session: AsyncSession = Session()
 
